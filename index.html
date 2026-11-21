@@ -291,6 +291,10 @@ select{width:100%;height:46px;border:1px solid var(--line);background:var(--card
 .dgrid button.on{background:var(--ok);border-color:var(--ok);color:#fff}.dgrid button.on small{color:#e6fff1}
 .dgrid button.cur{outline:3px solid var(--gold)}
 .rl.yg{background:#e8590c;color:#fff}
+.chnav{display:flex;gap:10px;margin:14px 0 6px}.chnav>*{flex:1}
+.chnav button{border:2px solid var(--accent);background:var(--card);color:var(--accent);border-radius:16px;padding:12px 10px;font-weight:800;font-size:17px;line-height:1.25}
+.chnav button small{display:block;font-weight:600;font-size:12px;opacity:.75}
+.chnav button.n{background:var(--accent);color:var(--card)}
 .audio-note{font-size:13px;color:var(--mute)}
 </style>
 </head>
@@ -529,7 +533,7 @@ const installHelpHTML = () => `<button class="x" data-close aria-label="סגור
 <ol class="help-steps"><li>בהודעה לחצו על <b>״פרטים נוספים״</b> ואז על <b>״התקן בכל זאת״</b>.</li>
 <li>אם אין כפתור כזה: ב-Chrome פתחו את התפריט ⋮ ובחרו <b>״הוסף למסך הבית״</b>, ואז <b>״צור קיצור דרך״</b>.</li>
 <li>או פשוט המשיכו להשתמש באתר דרך הדפדפן, בלי להתקין.</li></ol>`;
-const APP_VERSION = "2026.11.22 (v7)";
+const APP_VERSION = "2026.11.22 (v8)";
 async function hardRefresh() {
   if (!navigator.onLine) { toast("צריך חיבור לאינטרנט כדי לרענן"); return; }
   toast("מרענן לגרסה החדשה…");
@@ -640,9 +644,15 @@ const bmAt = (k, v) => S.bm && S.bm.k === k && S.bm.v === v;
 function seqOf() { const P = portion(route.p); return P ? P.ks : null; }
 function neighbors() {
   const seq = seqOf(), k = route.k;
-  if (seq) { const i = seq.indexOf(k); return { prev: i > 0 ? seq[i - 1] : null, next: i >= 0 && i < seq.length - 1 ? seq[i + 1] : null, last: i === seq.length - 1 }; }
-  const c = tgt(k).c; return { prev: c > 1 ? String(c - 1) : null, next: c < 150 ? String(c + 1) : null, last: false };
+  /* פרק סמוך לפי המספר (גם כשיוצאים מגבולות המנה) */
+  const c = tgt(k).c, cp = k === "119b" ? "119a" : c > 1 ? String(c - 1) : null, cn = k === "119a" ? "119b" : c < 150 ? String(c + 1) : null;
+  if (seq) {
+    const i = seq.indexOf(k), last = i === seq.length - 1;
+    return { prev: i > 0 ? seq[i - 1] : cp, prevP: i > 0 ? route.p : null, next: i >= 0 && !last ? seq[i + 1] : cn, nextP: i >= 0 && !last ? route.p : null, last };
+  }
+  return { prev: cp, prevP: null, next: cn, nextP: null, last: false };
 }
+const chapNav = nb => `<div class="chnav">${nb.prev ? `<button data-gok="${nb.prev}" ${nb.prevP ? `data-p="${nb.prevP}"` : ""}>› ${kName(nb.prev)}<small>הפרק הקודם</small></button>` : "<span></span>"}${nb.next ? `<button class="n" data-gok="${nb.next}" ${nb.nextP ? `data-p="${nb.nextP}"` : ""}>${kName(nb.next)} ‹<small>הפרק הבא</small></button>` : "<span></span>"}</div>`;
 function readView() {
   const k = route.k, t = tgt(k), c = t.c, P = portion(route.p), since = P ? P.since() : S.round;
   loadText(); loadMal(c); if (S.comm === "st") loadSt(c);
@@ -669,7 +679,7 @@ function readView() {
   }
   const done = isDoneK(k, since), nb = neighbors();
   const endCard = (!P || nb.last) ? `<div class="card donecard"><b>${P ? "סיימתם את " + P.title + "! חזק וברוך" : "סיימתם את הפרק"}</b>${!done ? `<button class="btn chk" data-toggle="${k}" ${P ? `data-p="${P.id}"` : ""}>${I.check} סמן כנאמר</button> ` : ""}<button class="pbtn" data-prayer="after" ${P ? `data-pp="${P.id}"` : ""}>🙏 תפילה לאחר האמירה</button></div>` : "";
-  return head + segBox + tools + first + hint + cmNote + `<div class="text" style="--fs:${S.fs}px">${tx}</div>` + endCard + footer(true) +
+  return head + segBox + tools + first + hint + cmNote + `<div class="text" style="--fs:${S.fs}px">${tx}</div>` + endCard + chapNav(nb) + footer(true) +
     `<div class="rbar"><button data-prevk ${nb.prev ? "" : "disabled"}>› הקודם<small>${nb.prev ? kShort(nb.prev) : ""}</small></button><button class="learn ${done ? "on" : ""}" data-toggle="${k}" ${P ? `data-p="${P.id}"` : ""}>${done ? "✓ נאמר" : "סמן כנאמר"}</button><button class="next" data-nextk ${nb.next ? "" : "disabled"}>הבא ‹<small>${nb.next ? kShort(nb.next) : ""}</small></button></div>`;
 }
 let lastBm = null;
@@ -759,7 +769,7 @@ function toggleK(k, p) {
 /* ---------- אירועים ---------- */
 document.addEventListener("click", e => {
   if (e.target.id === "ov") return closeSheet();
-  const t = e.target.closest("[data-go],[data-gop],[data-read],[data-toggle],[data-mode],[data-bm],[data-fs],[data-set],[data-sw],[data-th],[data-close],[data-nextk],[data-prevk],[data-hint],[data-undo],[data-share],[data-installhelp],[data-bmclear],[data-retry],[data-retryst],[data-bk],[data-navback],[data-navfwd],[data-refresh],[data-prayer],[data-sum],[data-src],[data-malsrc],[data-comm],[data-sunset],[data-pv],[data-newround],[data-remind]");
+  const t = e.target.closest("[data-go],[data-gop],[data-read],[data-toggle],[data-mode],[data-bm],[data-fs],[data-set],[data-sw],[data-th],[data-close],[data-nextk],[data-prevk],[data-gok],[data-hint],[data-undo],[data-share],[data-installhelp],[data-bmclear],[data-retry],[data-retryst],[data-bk],[data-navback],[data-navfwd],[data-refresh],[data-prayer],[data-sum],[data-src],[data-malsrc],[data-comm],[data-sunset],[data-pv],[data-newround],[data-remind]");
   if (!t) return;
   const D = t.dataset;
   if (t.hasAttribute("data-close")) closeSheet();
@@ -797,7 +807,8 @@ document.addEventListener("click", e => {
     go(r);
   }
   else if (D.bm != null) { const v = +D.bm; if (bmAt(route.k, v)) { S.bm = null; toast("הסימניה הוסרה"); } else { S.bm = { k: route.k, v, p: route.p || null }; route.resume = null; toast(`🔖 סומן: עד כאן אמרתי, לפני פסוק ${gem(v + 1)}`); S.hintBm = true; } save(); route.keep = true; render(); }
-  else if (t.hasAttribute("data-nextk") || t.hasAttribute("data-prevk")) { const nb = neighbors(), k = t.hasAttribute("data-nextk") ? nb.next : nb.prev; if (k) go({ v: "read", k, p: route.p }, true); }
+  else if (t.hasAttribute("data-nextk") || t.hasAttribute("data-prevk")) { const nb = neighbors(), nx = t.hasAttribute("data-nextk"), k = nx ? nb.next : nb.prev; if (k) go({ v: "read", k, p: nx ? nb.nextP : nb.prevP }, true); }
+  else if (D.gok) go({ v: "read", k: D.gok, p: D.p && portion(D.p) ? D.p : null }, true);
 });
 document.addEventListener("keydown", e => {
   if (e.key === "Escape") closeSheet();

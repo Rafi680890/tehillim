@@ -529,7 +529,7 @@ const installHelpHTML = () => `<button class="x" data-close aria-label="סגור
 <ol class="help-steps"><li>בהודעה לחצו על <b>״פרטים נוספים״</b> ואז על <b>״התקן בכל זאת״</b>.</li>
 <li>אם אין כפתור כזה: ב-Chrome פתחו את התפריט ⋮ ובחרו <b>״הוסף למסך הבית״</b>, ואז <b>״צור קיצור דרך״</b>.</li>
 <li>או פשוט המשיכו להשתמש באתר דרך הדפדפן, בלי להתקין.</li></ol>`;
-const APP_VERSION = "2026.11.22 (v6)";
+const APP_VERSION = "2026.11.22 (v7)";
 async function hardRefresh() {
   if (!navigator.onLine) { toast("צריך חיבור לאינטרנט כדי לרענן"); return; }
   toast("מרענן לגרסה החדשה…");
@@ -649,7 +649,7 @@ function readView() {
   const head = `<header class="rh">${`<button class="home" data-go="home">${I.home}<span>דף הבית</span></button>`}${navBack()}${navFwd()}<span class="spacer"></span><button class="gear" data-set aria-label="הגדרות תצוגה">Aa</button><div class="rt2">תהילים ${kName(k).replace("פרק ", "פרק ")}${P ? `<div style="font-size:13px;font-weight:600;opacity:.85">${P.title}</div>` : ""}</div></header>`;
   if (!TX) return head + (txFail ? `<div class="card" style="text-align:center;margin-top:24px"><div style="font-size:18px;font-weight:700">לא הצלחנו לטעון את הטקסט</div><div style="color:var(--mute);margin:6px 0 12px">בדוק את החיבור לאינטרנט ונסה שוב.</div><button class="btn read" style="margin:auto" data-retry>נסה שוב</button></div>` : `<div class="cmn" style="margin-top:40px;font-size:18px">טוען את הפרק…</div>`) + footer(true);
   const sg = segOf(c);
-  const segBox = `<div class="seg-box"><small>🔹 למה אומרים את הפרק</small>${sg ? `<b>${esc(sg)}</b><button data-src="${c}">המקור בספר שמוש תהלים</button>` : `<div class="no">בספר שמוש תהלים לא נזכרה סגולה מיוחדת לפרק זה.</div>`}</div>`;
+  const segBox = sg ? `<div class="seg-box"><small>🔹 למה אומרים את הפרק</small><b>${esc(sg)}</b><button data-src="${c}">המקור בספר שמוש תהלים</button></div>` : "";
   const tools = `<div class="tools"><button class="sumbtn" data-sum="${c}">📝 סיכום הפרק · המלבי״ם</button>${audioLinks(k)}</div>
    <div class="cmsel"><span>פירוש לכל פסוק:</span><div class="seg"><button class="${S.comm === "" ? "on" : ""}" data-comm="">ללא</button><button class="${S.comm === "st" ? "on" : ""}" data-comm="st">שטיינזלץ</button><button class="${S.comm === "ml" ? "on" : ""}" data-comm="ml">מלבי״ם</button></div></div>`;
   const first = P && P.ks[0] === k ? `<div style="text-align:center;margin:4px 0"><button class="pbtn" data-prayer="before">🙏 תפילה לפני האמירה</button></div>` : "";
@@ -716,7 +716,7 @@ function sumHTML(c) {
 }
 function srcHTML(c) {
   return `<button class="x" data-close aria-label="סגור">✕</button><h3 class="sh" style="margin-top:4px">🔹 למה אומרים את פרק ${gem(c)}</h3><div class="sumtxt">${esc(segOf(c))}</div>
-  <div class="lbl">לשון ספר ״שמוש תהלים״</div><div class="origtxt">${esc(T.src[c] || "")}</div><div class="srcnote">מתוך ספר ״שמוש תהלים״ (מיוחס לרב האי גאון), על פי ויקיטקסט. הסגולות מובאות כפי שהן במקור, ואין בהן כדי להורות הלכה למעשה.</div>`;
+  ${T.src[c] ? `<div class="lbl">לשון ספר ״שמוש תהלים״</div><div class="origtxt">${esc(T.src[c])}</div><div class="srcnote">מתוך ספר ״שמוש תהלים״ (מיוחס לרב האי גאון), על פי ויקיטקסט. הסגולות מובאות כפי שהן במקור, ואין בהן כדי להורות הלכה למעשה.</div>` : `<div class="srcnote" style="font-size:14px">פרק זה חסר בנוסח של ספר ״שמוש תהלים״ שבויקיטקסט. הסגולה מובאת על פי הנוסח המלא של הספר, כפי שתורגם ונדפס בידי ג. זליג (1788), בניסוח מקוצר. הסגולות מובאות כפי שהן במקור, ואין בהן כדי להורות הלכה למעשה.</div>`}`;
 }
 function settingsHTML() {
   const th = [["auto", "אוטומטי", "linear-gradient(90deg,#f4efe4 50%,#12161c 50%)"], ["light", "יום", "#f4efe4"], ["sepia", "קלף", "#efe2c3"], ["dark", "לילה", "#12161c"]];

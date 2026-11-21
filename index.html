@@ -1,0 +1,837 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#10294f">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self' blob:; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://www.sefaria.org; manifest-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-180.png">
+<title>תהילים</title>
+<style>
+@font-face{font-family:"TanachFont";src:url(font.woff2?v=2) format("woff2");font-weight:100 900;font-stretch:62% 100%;font-display:swap}
+@font-face{font-family:"UIFont";src:url(font-ui.woff2) format("woff2");font-weight:100 900;font-display:swap}
+:root{--bg:#f4efe4;--card:#fffdf8;--ink:#23262d;--mute:#6d6a62;--accent:#14305a;--ok:#22875a;--line:#e6dec9;--mark:#fff1b8;--fs:26px;
+ --hld:#fde2a0;--hlz:#c6ecd6;--bmc:#9b2c3d;--bmbg:rgba(155,44,61,.10);--bmflash:rgba(155,44,61,.32);--c1:#b4572b;--c2:#1b7f8c;--c3:#6a3fa0;--gold:#d9a441;--hero1:#0f2750;--hero2:#1b5e86;--hero3:#1b8a94}
+[data-theme=dark]{--bmc:#e57a8e;--bmbg:rgba(229,122,142,.14);--bmflash:rgba(229,122,142,.38);--bg:#12161c;--card:#1b2029;--ink:#e9e5da;--mute:#9b978c;--accent:#9cc0f0;--ok:#5fc287;--line:#2b323d;--mark:#4a4220;--hld:#5a4a1a;--hlz:#1f5a3d;--c1:#e08a5c;--c2:#52b8c4;--c3:#b394e6}
+[data-theme=sepia]{--bmc:#8a2c1d;--bmbg:rgba(138,44,29,.12);--bmflash:rgba(138,44,29,.34);--bg:#efe2c3;--card:#f8edd3;--ink:#3b2f1a;--mute:#7a6a4a;--accent:#6b3f1d;--ok:#3d7a43;--line:#d8c79d;--mark:#f3d982;--hld:#f4cf7a;--hlz:#bfe0c0}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:"UIFont",system-ui,"Segoe UI",Arial,sans-serif;font-size:17px}
+button,select,input{font:inherit;color:inherit}button{cursor:pointer}
+svg{width:1.15em;height:1.15em;vertical-align:-.2em;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+#app{max-width:720px;margin:0 auto;padding:0 14px calc(104px + env(safe-area-inset-bottom))}
+/* hero */
+.hero{margin:0 -14px;padding:calc(14px + env(safe-area-inset-top)) 18px 48px;text-align:center;color:#fff;border-radius:0 0 34px 34px;
+ background:radial-gradient(circle at 15% 10%,rgba(217,164,65,.35),transparent 45%),radial-gradient(circle at 90% 90%,rgba(255,255,255,.12),transparent 40%),linear-gradient(160deg,var(--hero1),var(--hero2) 60%,var(--hero3))}
+.logo{display:inline-block;background:#fff;border-radius:18px;padding:8px 14px;box-shadow:0 8px 24px rgba(0,0,0,.25)}
+.logo img{display:block;height:72px;width:auto}
+.hero h1{margin:8px 0 0;font-size:31px;font-weight:800;letter-spacing:.5px}
+.hero h1 b{color:var(--gold)}
+.hero p{margin:0;opacity:.9;font-size:14px}
+.htop{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.hded{display:flex;flex-direction:column;align-items:center;gap:5px;padding:9px 14px;border:1px solid rgba(217,164,65,.55);border-radius:14px;background:rgba(255,255,255,.08);text-align:center}
+.hded div{line-height:1.25}
+.hded i{width:26px;height:1px;background:var(--gold);opacity:.8}
+.hded small{display:block;color:var(--gold);font-size:12px;font-weight:700;letter-spacing:.6px}
+.hded b{display:block;font-size:15px;font-weight:700;color:#fff}
+.orn{display:flex;align-items:center;gap:10px;justify-content:center;color:var(--gold);margin:6px auto 0;max-width:260px}
+.orn:before,.orn:after{content:"";flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--gold))}
+.orn:after{transform:scaleX(-1)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:14px;margin:10px 0;box-shadow:0 2px 10px rgba(20,48,90,.06)}
+.datecard{margin-top:-34px;text-align:center;position:relative;padding:12px 12px 12px}
+.datecard .he{font-size:26px;font-weight:800;color:var(--accent);line-height:1.2}
+.datecard .gr{font-size:15px;color:var(--mute);margin-top:2px}
+.chip{display:inline-block;margin-top:6px;background:linear-gradient(90deg,var(--c2),var(--c3));color:#fff;border-radius:999px;padding:4px 14px;font-size:14px;font-weight:600}
+.strip{display:flex;gap:5px;margin-top:8px}
+.dy{flex:1;min-width:0;border:1px solid var(--line);background:var(--bg);border-radius:14px;padding:4px 0 5px;font-size:12px;color:var(--mute);line-height:1.15;font-weight:600}
+.dy b{display:block;font-size:15px;color:var(--ink);margin-top:2px;font-weight:800}
+.dy.sel{background:var(--accent);border-color:var(--accent);color:#cfe0f5}.dy.sel b{color:#fff}
+.dy.today{box-shadow:inset 0 -4px 0 var(--gold)}
+.dy:disabled{opacity:.35;cursor:default}
+.weeknav{display:flex;align-items:center;justify-content:space-between;gap:6px;margin-top:6px}
+.weeknav button{border:0;background:none;color:var(--accent);font-weight:800;font-size:15px;padding:8px 4px}
+.weeknav .td{border:2px solid var(--accent);border-radius:999px;padding:4px 20px;background:none;color:var(--accent)}
+.weeknav .td.on{background:var(--accent);color:var(--card);box-shadow:0 3px 10px rgba(20,48,90,.3)}
+.swrow{display:flex;align-items:center;justify-content:center;gap:6px;margin-top:8px;font-size:13px;color:var(--mute);font-weight:600}
+.sg{border:1px solid var(--line);background:var(--bg);border-radius:999px;padding:6px 12px;font-weight:700;font-size:13px;color:var(--ink)}
+.sg.on{background:var(--accent);border-color:var(--accent);color:var(--card)}
+.nav{display:flex;gap:8px;margin-top:14px;justify-content:center;flex-wrap:wrap}
+.nav button{border:1px solid var(--line);background:var(--bg);border-radius:999px;padding:9px 18px;font-weight:600}
+.nav button.p{background:var(--accent);color:var(--card);border-color:var(--accent)}
+/* chapter cards */
+.chap{display:flex;align-items:center;gap:10px;padding:10px 20px 10px 12px;position:relative;overflow:hidden}
+.chap:before{content:"";position:absolute;inset-block:0;inset-inline-start:0;width:9px;background:linear-gradient(180deg,var(--hero1),var(--hero2) 60%,var(--hero3))}
+.chap .t{flex:1}
+.chap .t small{color:var(--cc);font-weight:700;font-size:14px}
+.chap .t b{font-size:23px;display:block;line-height:1.15}
+.chap .t span{font-size:14px;color:var(--mute)}
+.chap .btns{display:flex;flex-direction:column;gap:6px}
+.btn{border:0;border-radius:12px;padding:7px 14px;font-weight:700;white-space:nowrap}
+.btn.read{background:linear-gradient(135deg,var(--hero1),var(--hero2) 65%,var(--hero3));color:#fff;font-size:17px;font-weight:800;padding:6px 16px 6px 10px;display:flex;align-items:center;gap:9px;box-shadow:0 5px 14px rgba(16,41,80,.35)}
+.btn.read .ic{width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.2);display:grid;place-items:center;flex:none}
+.btn.read .ic svg{width:20px;height:20px;stroke-width:2.2}
+.btn.read:active{transform:scale(.97)}
+.btn.chk{background:var(--bg);border:2px solid var(--line);color:var(--mute)}
+.btn.chk.on{background:var(--ok);border-color:var(--ok);color:#fff}
+.chap.done .t b{color:var(--ok)}
+.banner{background:var(--mark);border-radius:16px;padding:12px 14px;display:flex;align-items:center;gap:10px;margin:14px 0}
+.banner.col{flex-direction:column;align-items:stretch}
+.banner .bb{display:flex;gap:8px;flex-wrap:wrap}
+.banner .bb button{margin:0;flex:1;min-width:130px}
+.banner button{margin-inline-start:auto;border:0;background:var(--accent);color:var(--card);border-radius:10px;padding:9px 14px;font-weight:700;white-space:nowrap}
+.ring{--p:0;width:74px;height:74px;border-radius:50%;background:conic-gradient(var(--ok) calc(var(--p)*1%),var(--line) 0);display:grid;place-items:center;flex:none}
+.ring i{width:56px;height:56px;border-radius:50%;background:var(--card);display:grid;place-items:center;font-style:normal;font-weight:800;font-size:16px}
+.prog{display:flex;align-items:center;gap:14px}
+.bar{height:10px;background:var(--line);border-radius:6px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--ok)}
+h3.sh{margin:0 0 10px;font-size:19px;color:var(--accent);display:flex;align-items:center;gap:8px}
+.lbl{font-size:13px;font-weight:700;color:var(--mute);margin:10px 2px 4px}
+.sels{display:grid;grid-template-columns:1.1fr 1.3fr 1fr;gap:8px}
+select{width:100%;height:46px;border:1px solid var(--line);background:var(--card);border-radius:10px;padding:0 10px;font-size:17px;color:var(--ink)}
+.sels2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.tabs{position:fixed;bottom:0;inset-inline:0;background:var(--card);border-top:1px solid var(--line);display:flex;gap:8px;padding:8px 10px calc(8px + env(safe-area-inset-bottom));z-index:6;box-shadow:0 -4px 16px rgba(0,0,0,.06)}
+.tabs button{flex:1;border:0;border-radius:14px;background:none;padding:8px 4px;font-size:14px;color:var(--mute);display:flex;flex-direction:column;align-items:center;gap:2px}
+.tabs svg{width:24px;height:24px}
+.tabs button.on{color:var(--accent);font-weight:800}
+.tabs button.hl{background:linear-gradient(135deg,#1b5e86,#1b8a94);color:#fff;font-weight:800;box-shadow:0 5px 14px rgba(27,94,134,.5);position:relative}
+.tabs button.hl i{position:absolute;top:-9px;left:10px;background:var(--gold);color:#14305a;border-radius:999px;font-style:normal;font-size:12px;font-weight:800;padding:1px 8px}
+.sec{font-size:15px;font-weight:800;margin:20px 4px 4px;display:flex;align-items:center;gap:8px}
+.sec:before{content:"";width:6px;height:18px;border-radius:3px;background:var(--cc)}
+.book{display:block;width:100%;text-align:right;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px 12px;margin:6px 0}
+.book .r{display:flex;justify-content:space-between;margin-bottom:6px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(52px,1fr));gap:8px}
+.grid button{height:48px;border-radius:10px;border:1px solid var(--line);background:var(--card);font-size:17px}
+.grid button.on{background:var(--ok);border-color:var(--ok);color:#fff}
+.grid button.bm{outline:3px solid var(--gold)}
+/* footer */
+.ft{text-align:center;margin:30px 0 8px;color:var(--mute)}
+.ft .ded{margin:10px auto;padding:12px 10px;max-width:380px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.ft .ded small{display:block;color:var(--gold);letter-spacing:1px;font-size:13px;font-weight:700}
+.ft .ded b{display:block;color:var(--accent);font-size:17px;font-weight:700;margin:1px 0 6px}
+.ft .ded b:last-child{margin-bottom:0}
+.ft .cp{font-size:12px;opacity:.85}
+.ft .src{font-size:11px;opacity:.75;margin-top:6px;line-height:1.5}
+.ft .src a{color:inherit;text-decoration:underline}
+/* reader */
+.rh{position:sticky;top:0;z-index:5;margin:0 -14px;padding:calc(8px + env(safe-area-inset-top)) 12px 10px;display:flex;align-items:center;gap:10px;color:#fff;background:linear-gradient(160deg,var(--hero1),var(--hero2) 70%,var(--hero3));box-shadow:0 4px 14px rgba(0,0,0,.2)}
+.rh .home{display:flex;align-items:center;gap:6px;border:0;background:#fff;color:#10294f;font-weight:800;border-radius:999px;padding:9px 14px;box-shadow:0 2px 6px rgba(0,0,0,.25);white-space:nowrap}
+.rh .rt{flex:1;text-align:center;font-weight:800;font-size:19px}
+.rh .gear{border:1px solid rgba(255,255,255,.5);background:rgba(255,255,255,.14);color:#fff;border-radius:12px;height:42px;min-width:46px;font-weight:800;display:flex;align-items:center;justify-content:center;gap:4px;padding:0 10px}
+.cmn{font-size:14px;color:var(--mute);text-align:center;margin:6px 0;font-family:"UIFont",system-ui,sans-serif}
+.legend{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;font-size:13px;color:var(--mute);margin:12px 0 4px;font-family:"UIFont",sans-serif}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:16px;height:16px;border-radius:5px;display:inline-block}
+.text{font-family:"TanachFont","Noto Serif Hebrew","Ezra SIL","SBL Hebrew","Times New Roman",serif;font-size:var(--fs);line-height:2.2;text-align:right;hyphens:none;margin-top:8px}
+.v{border-radius:8px;transition:background .3s}
+.v.bm{background:var(--bmbg)}
+.v.pulse{animation:bmpulse .9s ease-in-out 3}
+@keyframes bmpulse{0%,100%{background:var(--bmbg)}50%{background:var(--bmflash)}}
+.vn.on{background:var(--bmc);border-color:var(--bmc);color:#fff}
+.vn svg{width:1.1em;height:1.1em;vertical-align:-.18em;margin-inline-start:5px}
+.vn.on svg{fill:currentColor}
+.bmline{display:flex;align-items:center;gap:10px;margin:8px 0 14px;color:var(--bmc);font-family:"UIFont",system-ui,sans-serif;font-size:16px;font-weight:800;line-height:1.2}
+.bmline:before,.bmline:after{content:"";flex:1;height:2px;background:var(--bmc);opacity:.85}
+.bmline button{border:1px solid var(--bmc);background:transparent;color:var(--bmc);border-radius:999px;font-size:12px;font-weight:700;padding:3px 10px}
+.hint{display:flex;align-items:center;gap:12px;background:var(--card);border:2px dashed var(--bmc);border-radius:16px;padding:12px 14px;margin:10px 0 4px;font-family:"UIFont",system-ui,sans-serif;font-size:15px;line-height:1.5}
+.hint b{color:var(--bmc)}
+.hint button{border:0;background:var(--bmc);color:#fff;border-radius:10px;padding:9px 14px;font-weight:700;white-space:nowrap}
+.bmcard{display:flex;align-items:center;gap:14px;background:linear-gradient(135deg,var(--card),var(--bmbg));border:2px solid var(--bmc);padding:14px}
+.bmcard .ico{width:46px;height:46px;border-radius:50%;background:var(--bmc);color:#fff;display:grid;place-items:center;flex:none}
+.bmcard .ico svg{width:24px;height:24px;fill:currentColor}
+.bmcard .tx{flex:1;min-width:0}
+.bmcard .tx small{color:var(--bmc);font-weight:800;font-size:13px}
+.bmcard .tx b{display:block;font-size:20px}
+.bmcard .tx span{display:block;font-family:"TanachFont",serif;font-size:17px;color:var(--mute);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;direction:rtl}
+.rls{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:10px 0 2px;font-size:14px;color:var(--mute);font-weight:700}
+.chap .rls{margin:8px 0 0}
+.rl{max-width:100%;text-decoration:none;border-radius:999px;padding:9px 14px;font-weight:800;font-size:14px;line-height:1.2;display:inline-block}
+.rl.sp{background:#1db954;color:#07210f}.rl.ez{background:var(--accent);color:var(--card)}
+.nv{flex:none;width:44px;min-height:44px;border:1px solid var(--line);background:var(--bg);color:var(--accent);border-radius:14px;display:grid;place-items:center;padding:0}
+.nv:disabled{opacity:.28;cursor:default}
+.nv svg{width:22px;height:22px;stroke-width:2.6;margin:0}
+.tabs .nv{align-self:center}
+.rh{flex-wrap:wrap}
+.rh .nv{border:1px solid rgba(255,255,255,.5);background:rgba(255,255,255,.14);color:#fff;width:42px;min-height:42px}
+.rh .spacer{flex:1}
+.rh .rt2{flex-basis:100%;text-align:center;font-weight:800;font-size:19px;margin-top:2px}
+.bookrow{display:flex;gap:6px;align-items:stretch;margin:6px 0}
+.bookrow .book{margin:0;flex:1}
+.bk-all{flex:none;width:54px;border:1px solid var(--line);background:var(--card);border-radius:12px;font-weight:800;font-size:20px;color:var(--ok)}
+.bk-all.full{background:var(--ok);color:#fff;border-color:var(--ok)}
+.bkhead{font-weight:800;font-size:17px;margin-bottom:10px}
+.bkbtns{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.bkbtns button{border:1px solid var(--line);background:var(--bg);border-radius:12px;padding:10px 12px;font-weight:700;font-size:14px}
+.bkbtns button.ok{background:var(--ok);border-color:var(--ok);color:#fff}
+.bkbtns button.on{background:var(--accent);color:var(--card);border-color:var(--accent)}
+.grid button.sel{outline:3px solid var(--accent);background:var(--mark)}
+.selbar{position:fixed;left:10px;right:10px;bottom:calc(84px + env(safe-area-inset-bottom));z-index:7;background:var(--card);border:2px solid var(--accent);border-radius:16px;padding:10px;display:flex;flex-wrap:wrap;gap:8px;align-items:center;box-shadow:0 8px 24px rgba(0,0,0,.3)}
+.selbar b{flex-basis:100%;font-size:15px}
+.selbar button{border:1px solid var(--line);background:var(--bg);border-radius:12px;padding:9px 12px;font-weight:700;font-size:14px}
+.selbar button.ok{background:var(--ok);border-color:var(--ok);color:#fff}
+.ver{font-size:12px;color:var(--mute);margin-top:12px;font-weight:700}
+.refbtn{display:block;margin:8px auto 0;border:2px solid var(--accent);background:var(--card);color:var(--accent);border-radius:12px;padding:10px 18px;font-weight:800;font-size:15px}
+.vernote{font-size:12px;color:var(--mute);margin-top:6px;line-height:1.4}
+.sharecard{border:2px solid var(--line);padding:13px;margin:10px 0}
+.sharecard .shh{display:flex;align-items:center;gap:8px;font-weight:800;font-size:18px;color:var(--ink);margin:0 0 4px}
+.sharecard .shh svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.sharecard .shs{font-size:13px;color:var(--mute);margin:0 0 10px}
+.sharecard .sgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.sharecard .sb{display:flex;align-items:center;justify-content:center;gap:9px;border:0;border-radius:999px;padding:10px 10px;color:#fff;font-weight:800;font-size:16px;transition:transform .12s}
+.sharecard .sb:active{transform:scale(.96)}
+.sharecard .sb svg{width:22px;height:22px;fill:currentColor;flex:none}
+.sharecard .sb.cp svg{fill:none;stroke:#fff;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.sharecard .wa{background:#2f9e44}.sharecard .fb{background:#1877d2}.sharecard .tg{background:#12a0a8}.sharecard .cp{background:#5b2fa3}
+.sharecard .more{margin-top:8px;width:100%;display:flex;align-items:center;justify-content:center;gap:9px;background:transparent;color:var(--accent);border:2px solid var(--accent);border-radius:999px;padding:9px;font-weight:800;font-size:16px}
+.sharecard .more svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.sharecard .help{display:block;margin:8px auto 0;border:0;background:none;color:var(--mute);text-decoration:underline;font-size:13px;padding:0}
+.help-steps{font-size:16px;line-height:1.7}.help-steps li{margin-bottom:8px}.help-steps b{color:var(--accent)}
+.bmcard{flex-wrap:wrap}
+.bmcard .go{border:0;background:var(--bmc);color:#fff;border-radius:12px;padding:13px 14px;font-weight:800;font-size:17px;width:100%}
+.vn{font-family:"UIFont",system-ui,sans-serif;font-size:.5em;line-height:1.1;color:var(--accent);border:1px solid var(--line);border-radius:8px;padding:6px 10px;margin-inline-end:6px;cursor:pointer;vertical-align:middle;background:var(--card);white-space:nowrap;min-width:34px}
+.vn:focus-visible,.hl:focus-visible,.lo:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.pb{display:block;height:.6em}
+.hl{border-radius:10px;padding:1px 4px;cursor:pointer;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+.hl.d{background:var(--hld)}.hl.z{background:var(--hlz)}.hl.dz{background:linear-gradient(180deg,var(--hld) 50%,var(--hlz) 50%)}
+.lo{border:0;line-height:1.6;display:inline-block;font-family:"UIFont",sans-serif;font-size:.45em;border-radius:999px;padding:0 9px;margin-inline-end:4px;vertical-align:middle;cursor:pointer;color:var(--ink)}
+.lo.d{background:var(--hld)}.lo.z{background:var(--hlz)}
+.rbar{position:fixed;bottom:0;inset-inline:0;background:var(--card);border-top:1px solid var(--line);padding:8px 10px calc(8px + env(safe-area-inset-bottom));display:flex;gap:8px;align-items:stretch;z-index:6;box-shadow:0 -4px 16px rgba(0,0,0,.08)}
+.rbar button{border:1px solid var(--line);background:var(--bg);border-radius:14px;min-height:50px;padding:4px 10px;font-weight:700;line-height:1.15;flex:1}
+.rbar button small{display:block;font-weight:500;font-size:12px;color:var(--mute)}
+.rbar .next{background:var(--accent);color:var(--card);border-color:var(--accent)}
+.rbar .next small{color:inherit;opacity:.85}
+.rbar .learn{flex:1.2;background:var(--card);color:var(--ok);border:2px solid var(--ok)}
+.rbar .learn.on{background:var(--ok);color:#fff}
+/* sheets */
+.ov{position:fixed;inset:0;background:rgba(10,18,34,.55);z-index:30;display:none;align-items:flex-end;justify-content:center}
+.ov.show{display:flex}
+.sheet{overscroll-behavior:contain;background:var(--card);width:100%;max-width:720px;max-height:78vh;overflow:auto;border-radius:22px 22px 0 0;padding:18px 18px calc(22px + env(safe-area-inset-bottom));animation:up .22s ease-out}
+@keyframes up{from{transform:translateY(40px);opacity:0}}
+.sheet .x{float:left;border:0;background:var(--bg);width:38px;height:38px;border-radius:50%;font-size:18px}
+.cmt{border-radius:14px;padding:12px 14px;margin:10px 0;line-height:1.85;font-size:19px}
+.cmt.d{background:var(--hld)}.cmt.z{background:var(--hlz)}
+.cmt .src{font-size:13px;font-weight:800;opacity:.75;display:block}
+.cmt h4{margin:2px 0 4px;font-size:22px;font-family:"TanachFont",serif}
+.row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 0;border-bottom:1px solid var(--line)}
+.row:last-of-type{border:0}
+.seg{display:flex;gap:6px}
+.seg button{border:1px solid var(--line);background:var(--bg);border-radius:10px;padding:8px 12px;font-weight:700}
+.seg button.on{background:var(--accent);color:var(--card);border-color:var(--accent)}
+.themes{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;width:100%}
+.themes button{border:2px solid var(--line);border-radius:14px;padding:10px 4px;font-size:15px;font-weight:700;display:flex;flex-direction:column;align-items:center;gap:4px;background:var(--bg)}
+.themes button.on{border-color:var(--accent)}
+.themes i{width:34px;height:22px;border-radius:6px;border:1px solid rgba(0,0,0,.2)}
+.sw{width:52px;height:30px;border-radius:999px;border:0;background:var(--line);position:relative;flex:none}
+.sw:after{content:"";position:absolute;top:3px;inset-inline-start:3px;width:24px;height:24px;border-radius:50%;background:#fff;transition:.2s;box-shadow:0 1px 3px rgba(0,0,0,.3)}
+.sw.on{background:var(--ok)}.sw.on:after{inset-inline-start:25px}
+.toast{position:fixed;top:80px;left:50%;transform:translateX(-50%);background:#222;color:#fff;padding:10px 18px;border-radius:999px;z-index:40;font-size:15px;opacity:0;transition:opacity .25s;pointer-events:none}
+.toast.show{opacity:.95}
+.toast button{margin-inline-start:14px;border:0;background:#fff;color:#14305a;border-radius:999px;padding:6px 14px;font-weight:800}
+/* תוספות לתהילים */
+.modes{display:flex;gap:6px;justify-content:center;margin-top:10px}
+.today{position:relative;overflow:hidden;padding:16px 16px 14px 22px}
+.today:before{content:"";position:absolute;inset-block:0;inset-inline-start:0;width:9px;background:linear-gradient(180deg,var(--hero1),var(--hero2) 60%,var(--hero3))}
+.today small{color:var(--c2);font-weight:800;font-size:14px}
+.today h2{margin:2px 0 2px;font-size:25px;line-height:1.2}
+.today .sub{color:var(--mute);font-size:15px}
+.today .row2{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.today .row2 .btn.read{flex:1;justify-content:center;min-width:160px;padding:10px 16px}
+.pbtn{border:1px solid var(--gold);background:var(--card);color:var(--accent);border-radius:12px;padding:9px 12px;font-weight:800;font-size:14px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.chips button{border:1px solid var(--line);background:var(--bg);border-radius:999px;padding:6px 12px;font-weight:700;font-size:15px;color:var(--ink)}
+.chips button.on{background:var(--ok);border-color:var(--ok);color:#fff}
+.chips button.bm{outline:3px solid var(--gold)}
+.mini{display:flex;align-items:center;gap:8px;margin-top:10px;font-size:14px;color:var(--mute);font-weight:700}
+.mini .bar{flex:1}
+.choose{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.choose button{border:1px solid var(--line);background:var(--card);border-radius:16px;padding:14px 10px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:4px;box-shadow:0 2px 8px rgba(20,48,90,.05)}
+.choose button b{font-size:17px;color:var(--accent)}
+.choose button span{font-size:13px;color:var(--mute)}
+.choose button i{font-style:normal;font-size:26px;line-height:1}
+.choose .wide{grid-column:1/-1;background:linear-gradient(135deg,var(--card),var(--mark))}
+.lrow{display:flex;align-items:center;gap:10px;width:100%;text-align:right;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:11px 12px;margin:7px 0}
+.lrow .t{flex:1;min-width:0}
+.lrow .t b{display:block;font-size:18px}
+.lrow .t span{display:block;font-size:14px;color:var(--mute);line-height:1.35}
+.lrow.cur{border:2px solid var(--gold);background:linear-gradient(135deg,var(--card),var(--mark))}
+.lrow .ck{flex:none;width:40px;height:40px;border-radius:50%;border:2px solid var(--line);background:var(--bg);color:var(--mute);font-weight:800;font-size:18px;display:grid;place-items:center}
+.lrow .ck.on{background:var(--ok);border-color:var(--ok);color:#fff}
+.lrow .go2{flex:none;border:0;background:var(--accent);color:var(--card);border-radius:12px;padding:9px 13px;font-weight:800}
+.seg-box{background:linear-gradient(135deg,var(--card),var(--mark));border:2px solid var(--gold);border-radius:16px;padding:12px 14px;margin:12px 0 8px}
+.seg-box small{display:block;color:var(--c1);font-weight:800;font-size:13px;letter-spacing:.3px}
+.seg-box b{display:block;font-size:18px;line-height:1.45;margin-top:2px}
+.seg-box .no{color:var(--mute);font-weight:600;font-size:15px}
+.seg-box button{margin-top:8px;border:1px solid var(--line);background:var(--card);border-radius:999px;padding:5px 12px;font-size:13px;font-weight:700;color:var(--accent)}
+.tools{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:6px 0}
+.tools .sumbtn{background:linear-gradient(135deg,var(--c3),var(--c2));color:#fff;border:0;border-radius:999px;padding:9px 16px;font-weight:800;font-size:15px;box-shadow:0 4px 12px rgba(106,63,160,.3)}
+.cmsel{display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:14px;color:var(--mute);font-weight:700;margin:6px 0}
+.cm{display:block;font-family:"UIFont",system-ui,sans-serif;font-size:max(15px,calc(var(--fs) * .62));line-height:1.75;color:var(--ink);background:var(--bg);border-inline-start:4px solid var(--c2);border-radius:10px;padding:8px 12px;margin:4px 0 12px}
+.cm.ml{border-color:var(--c3)}
+.cm p{margin:0 0 6px}.cm p:last-child{margin:0}
+.lseg{display:block;font-family:"UIFont",sans-serif;font-size:14px;font-weight:700;color:var(--c1);margin-top:2px}
+.lh{display:block;text-align:center;font-family:"TanachFont",serif;font-size:calc(var(--fs) * 1.25);color:var(--accent);margin:18px 0 4px;font-weight:700}
+.donecard{text-align:center;border:2px solid var(--ok);background:linear-gradient(135deg,var(--card),rgba(34,135,90,.08))}
+.donecard b{display:block;font-size:19px;color:var(--ok);margin-bottom:8px}
+.prayer{font-family:"TanachFont",serif;font-size:calc(var(--fs) * .85);line-height:2;text-align:justify}
+.prayer h4{font-family:"UIFont",sans-serif;font-size:15px;color:var(--c1);margin:14px 0 2px}
+.sumtxt{font-size:19px;line-height:1.8;background:var(--mark);border-radius:14px;padding:12px 14px}
+.srcnote{font-size:12px;color:var(--mute);margin-top:8px;line-height:1.5}
+.origtxt{font-size:17px;line-height:1.8;white-space:pre-line;background:var(--bg);border-radius:12px;padding:10px 12px;margin-top:10px}
+.malsrc{font-size:17px;line-height:1.85;background:var(--bg);border-radius:12px;padding:10px 12px;margin-top:10px}
+.remrow{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.remrow input[type=time]{height:46px;border:1px solid var(--line);background:var(--card);border-radius:10px;padding:0 10px;font-size:18px;color:var(--ink)}
+.remrow label{display:flex;align-items:center;gap:6px;font-size:14px;color:var(--mute);font-weight:700}
+.remrow .btn{background:var(--accent);color:var(--card);padding:11px 14px}
+.pseg{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:10px}
+.pseg button{border:1px solid var(--line);background:var(--card);border-radius:12px;padding:10px 4px;font-weight:800;font-size:14px}
+.pseg button.on{background:var(--accent);color:var(--card);border-color:var(--accent)}
+.dgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(58px,1fr));gap:8px}
+.dgrid button{border:1px solid var(--line);background:var(--card);border-radius:12px;padding:6px 2px;font-weight:800;font-size:15px;line-height:1.2}
+.dgrid button small{display:block;font-weight:600;font-size:11px;color:var(--mute)}
+.dgrid button.on{background:var(--ok);border-color:var(--ok);color:#fff}.dgrid button.on small{color:#e6fff1}
+.dgrid button.cur{outline:3px solid var(--gold)}
+.audio-note{font-size:13px;color:var(--mute)}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<div class="ov" id="ov"><div class="sheet" id="sheet" role="dialog" aria-modal="true" tabindex="-1"></div></div>
+<div class="toast" id="toast"></div>
+<script src="meta.js"></script>
+<script>
+"use strict";
+/* ---------- נתונים ---------- */
+const T = window.TH;
+if (!T || !Array.isArray(T.vc)) {
+  document.getElementById("app").innerHTML = '<div style="text-align:center;padding:60px 20px;font-size:18px"><b>לא ניתן לטעון את נתוני האפליקציה</b><div style="margin:8px 0 16px;opacity:.75">בדוק את החיבור לאינטרנט ורענן את הדף.</div><button onclick="location.reload()" style="padding:10px 22px;border-radius:12px;border:0;background:#14305a;color:#fff;font-size:17px">רענן</button></div>';
+  throw new Error("META data is missing");
+}
+const VC = T.vc;                                   // מספר פסוקים בכל פרק
+/* יחידות מעקב: כל פרק הוא יחידה, ופרק קיט מחולק לשתיים (כמו בחלוקה לימי החודש) - 151 יחידות */
+const UNITS = {}, ULIST = [];
+for (let c = 1; c <= 150; c++) {
+  if (c === 119) { UNITS["119a"] = { c, a: 0, z: 95 }; UNITS["119b"] = { c, a: 96, z: 175 }; ULIST.push("119a", "119b"); }
+  else { UNITS[c] = { c, a: 0, z: VC[c - 1] - 1 }; ULIST.push(String(c)); }
+}
+const TOTAL = ULIST.length;
+const unitsOf = k => k === "119" ? ["119a", "119b"] : [k];
+const tgt = k => k === "119" ? { c: 119, a: 0, z: 175 } : UNITS[k];
+const validK = k => k === "119" || !!UNITS[k];
+const BOOKS = [["ספר ראשון", 1, 41, "בראשית"], ["ספר שני", 42, 72, "שמות"], ["ספר שלישי", 73, 89, "ויקרא"], ["ספר רביעי", 90, 106, "במדבר"], ["ספר חמישי", 107, 150, "דברים"]];
+const bookOf = c => BOOKS.findIndex(b => c >= b[1] && c <= b[2]);
+const range = (a, b) => Array.from({ length: b - a + 1 }, (_, i) => String(a + i));
+const MONTH = [[1, 9], [10, 17], [18, 22], [23, 28], [29, 34], [35, 38], [39, 43], [44, 48], [49, 54], [55, 59], [60, 65], [66, 68], [69, 71], [72, 76], [77, 78], [79, 82], [83, 87], [88, 89], [90, 96], [97, 103], [104, 105], [106, 107], [108, 112], [113, 118], "119a", "119b", [120, 134], [135, 139], [140, 144], [145, 150]]
+  .map(x => Array.isArray(x) ? range(x[0], x[1]) : [x]);
+const WEEK = [[1, 29], [30, 50], [51, 72], [73, 89], [90, 106], [107, 119], [120, 150]].map(([a, b]) => range(a, b));
+const WD = ["ראשון", "שני", "שלישי", "רביעי", "חמישי", "שישי", "שבת קודש"];
+const CAT = T.cat;
+/* קישורי שמע: הרב מוטי פרנקו (Spotify) - "מספר פרק": "מזהה פרק". פרק בלי מזהה לא מציג כפתור שמע. */
+const SPOTIFY_EP = {};
+
+/* ---------- מצב ---------- */
+const KEY = "tehillim.v1";
+let S = { v: 1, done: {}, bm: null, round: Date.now(), rounds: 0, fs: 28, taamim: true, theme: "light", sunset: true, mode: "m", comm: "", hintBm: false, pv: "d", remT: "07:00", remShab: true };
+try {
+  const raw = JSON.parse(localStorage.getItem(KEY) || "{}");
+  if (raw && typeof raw === "object" && !Array.isArray(raw)) Object.assign(S, raw, { v: 1 });
+} catch (e) {}
+{ // אימות
+  const d = {}; if (S.done && typeof S.done === "object") for (const k in S.done) if (UNITS[k] && Number.isFinite(S.done[k])) d[k] = S.done[k]; S.done = d;
+  if (!(S.bm && validK(S.bm.k) && Number.isInteger(S.bm.v) && S.bm.v >= tgt(S.bm.k).a && S.bm.v <= tgt(S.bm.k).z)) S.bm = null;
+  if (!(Number.isFinite(S.fs) && S.fs >= 16 && S.fs <= 48)) S.fs = 28;
+  if (!["light", "sepia", "dark", "auto"].includes(S.theme)) S.theme = "light";
+  if (!["m", "w"].includes(S.mode)) S.mode = "m";
+  if (!["", "st", "ml"].includes(S.comm)) S.comm = "";
+  if (!["d", "w", "m", "r"].includes(S.pv)) S.pv = "d";
+  if (!Number.isFinite(S.round)) S.round = Date.now();
+  if (!Number.isInteger(S.rounds) || S.rounds < 0) S.rounds = 0;
+  if (!/^\d\d:\d\d$/.test(S.remT || "")) S.remT = "07:00";
+  S.sunset = S.sunset !== false; S.taamim = S.taamim !== false; S.remShab = S.remShab !== false;
+}
+const save = () => { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} };
+try { navigator.storage && navigator.storage.persist && navigator.storage.persist(); } catch (e) {}
+const darkMQ = window.matchMedia ? matchMedia("(prefers-color-scheme: dark)") : null;
+function applyTheme() { document.documentElement.dataset.theme = S.theme === "auto" ? (darkMQ && darkMQ.matches ? "dark" : "light") : S.theme; }
+applyTheme();
+if (darkMQ) (darkMQ.addEventListener ? darkMQ.addEventListener("change", applyTheme) : darkMQ.addListener(applyTheme));
+
+/* ---------- עזרים ---------- */
+function heb(n) {
+  const L = [[400, "ת"], [300, "ש"], [200, "ר"], [100, "ק"], [90, "צ"], [80, "פ"], [70, "ע"], [60, "ס"], [50, "נ"], [40, "מ"], [30, "ל"], [20, "כ"], [10, "י"], [9, "ט"], [8, "ח"], [7, "ז"], [6, "ו"], [5, "ה"], [4, "ד"], [3, "ג"], [2, "ב"], [1, "א"]];
+  let s = ""; if (n >= 100) { const h = n - n % 100; for (const [v, l] of L) while (n >= v && v >= 100) { s += l; n -= v; } }
+  if (n === 15) return s + "טו"; if (n === 16) return s + "טז";
+  for (const [v, l] of L) while (n >= v) { s += l; n -= v; }
+  return s;
+}
+const gem = n => { const h = heb(n); return h.length > 1 ? h.slice(0, -1) + "״" + h.slice(-1) : h + "׳"; };
+const kName = k => k === "119a" ? "פרק קי״ט (א–מ)" : k === "119b" ? "פרק קי״ט (נ–ת)" : "פרק " + gem(+k);
+const kShort = k => k === "119a" ? "קי״ט א–מ" : k === "119b" ? "קי״ט נ–ת" : gem(+k);
+const segOf = c => T.seg[c] || "";
+const esc = s => String(s).replace(/[&<>"]/g, ch => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[ch]));
+const hebParts = new Intl.DateTimeFormat("he-u-ca-hebrew", { day: "numeric", month: "long", year: "numeric" });
+const hebOf = d => { const p = {}; hebParts.formatToParts(d).forEach(x => p[x.type] = x.value); const num = v => /^\d+$/.test(v); return { y: p.year, m: p.month, d: +p.day, yt: num(p.year) ? gem(+p.year % 1000) : p.year, dt: num(p.day) ? gem(+p.day) : p.day }; };
+const hebFmt = d => { const h = hebOf(d); return `${h.dt} ב${h.m} ${h.yt}`; };
+const wdFmt = new Intl.DateTimeFormat("he-IL", { weekday: "long" });
+const pad = n => String(n).padStart(2, "0");
+const addDays = (d, n) => new Date(d.getFullYear(), d.getMonth(), d.getDate() + n, 12);
+/* היום העברי מתחיל בשקיעה (לפי ירושלים) */
+const JER = new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Jerusalem", year: "numeric", month: "2-digit", day: "2-digit" });
+function sunsetMs(y, m, d, lat = 31.778, lon = 35.235) {          // m מ-0; אלגוריתם NOAA
+  const R = Math.PI / 180, JD = Date.UTC(y, m, d, 12) / 864e5 + 2440587.5, T2 = (JD - 2451545) / 36525;
+  const L0 = (280.46646 + T2 * (36000.76983 + T2 * 0.0003032)) % 360, M = 357.52911 + T2 * (35999.05029 - 0.0001537 * T2), e = 0.016708634 - T2 * (0.000042037 + 0.0000001267 * T2);
+  const C = Math.sin(M * R) * (1.914602 - T2 * (0.004817 + 0.000014 * T2)) + Math.sin(2 * M * R) * (0.019993 - 0.000101 * T2) + Math.sin(3 * M * R) * 0.000289;
+  const om = 125.04 - 1934.136 * T2, lam = L0 + C - 0.00569 - 0.00478 * Math.sin(om * R);
+  const e0 = 23 + (26 + (21.448 - T2 * (46.815 + T2 * (0.00059 - T2 * 0.001813))) / 60) / 60, eps = e0 + 0.00256 * Math.cos(om * R);
+  const dec = Math.asin(Math.sin(eps * R) * Math.sin(lam * R)), y2 = Math.tan(eps * R / 2) ** 2;
+  const eq = 4 * (y2 * Math.sin(2 * L0 * R) - 2 * e * Math.sin(M * R) + 4 * e * y2 * Math.sin(M * R) * Math.cos(2 * L0 * R) - 0.5 * y2 * y2 * Math.sin(4 * L0 * R) - 1.25 * e * e * Math.sin(2 * M * R)) / R;
+  const ha = Math.acos(Math.cos(90.833 * R) / (Math.cos(lat * R) * Math.cos(dec)) - Math.tan(lat * R) * Math.tan(dec)) / R;
+  return Date.UTC(y, m, d) + (720 - 4 * (lon - ha) - eq) * 60000;
+}
+let todayShifted = false;
+const today = () => {
+  const [y, m, d] = JER.format(new Date()).split("-").map(Number);
+  todayShifted = S.sunset && Date.now() >= sunsetMs(y, m - 1, d);
+  return new Date(y, m - 1, d + (todayShifted ? 1 : 0), 12);
+};
+const startOf = d => S.sunset ? sunsetMs(d.getFullYear(), d.getMonth(), d.getDate() - 1) : new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime();
+const dayStart = () => startOf(today());
+const weekStart = () => { const d = today(); return startOf(addDays(d, -d.getDay())); };
+const monthStart = () => { const d = today(); return startOf(addDays(d, 1 - hebOf(d).d)); };
+const monthLen = d => hebOf(addDays(d, 30 - hebOf(d).d)).d === 30 ? 30 : 29;
+const $ = s => document.querySelector(s);
+function toast(t, act) {
+  const e = $("#toast"); e.textContent = t; e.style.pointerEvents = act ? "auto" : "none";
+  if (act) { const b = document.createElement("button"); b.textContent = act; b.setAttribute("data-undo", ""); e.appendChild(b); }
+  e.classList.add("show"); clearTimeout(toast.t); toast.t = setTimeout(() => { e.classList.remove("show"); e.style.pointerEvents = "none"; }, act ? 7000 : 1800);
+}
+const I = {
+  home: '<svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h5v-6h4v6h5V10"/></svg>',
+  chart: '<svg viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-8M22 20H2"/></svg>',
+  openbook: '<svg viewBox="0 0 24 24"><path d="M12 6.5C9.8 5 7 4.5 3.5 4.5v13c3.5 0 6.3.5 8.5 2 2.2-1.5 5-2 8.5-2v-13C17 4.5 14.2 5 12 6.5z"/><path d="M12 6.5v13"/></svg>',
+  check: '<svg viewBox="0 0 24 24"><path d="M5 12l5 5 9-10"/></svg>',
+  bell: '<svg viewBox="0 0 24 24"><path d="M6 8a6 6 0 1112 0c0 7 3 8 3 8H3s3-1 3-8"/><path d="M10 21h4"/></svg>'
+};
+const BMI = '<svg viewBox="0 0 24 24"><path d="M6 3h12v18l-6-4-6 4z"/></svg>';
+
+/* ---------- חלוקות (מנות) ---------- */
+/* מזהה מנה: m1..m30 (ימי החודש), m29s (כ״ט בחודש חסר), w0..w6 (ימי השבוע), b0..b4 (ספרים), c0.. (בקשות) */
+function portion(p) {
+  if (!p) return null;
+  const t = p[0], n = +p.slice(1).replace("s", "");
+  const rng = ks => { const a = ks[0], z = ks[ks.length - 1]; return a === z ? kName(a) : `פרקים ${kShort(a)}–${kShort(z)}`; };
+  if (t === "m" && p === "m29s") { const ks = MONTH[28].concat(MONTH[29]); return { id: p, title: "יום כ״ט לחודש", sub: rng(ks) + " · חודש חסר – כולל יום ל׳", ks, since: monthStart }; }
+  if (t === "m" && n >= 1 && n <= 30) { const ks = MONTH[n - 1]; return { id: p, title: `יום ${gem(n)} לחודש`, sub: n === 25 ? "פרק קי״ט, אותיות א–מ (פסוקים א–צו)" : n === 26 ? "פרק קי״ט, אותיות נ–ת (פסוקים צז–קעו)" : rng(ks), ks, since: monthStart }; }
+  if (t === "w" && n >= 0 && n <= 6) { const ks = WEEK[n]; return { id: p, title: `יום ${WD[n]}`, sub: rng(ks), ks, since: weekStart }; }
+  if (t === "b" && BOOKS[n]) { const b = BOOKS[n]; return { id: p, title: b[0], sub: `פרקים ${gem(b[1])}–${gem(b[2])} · כנגד ספר ${b[3]}`, ks: range(b[1], b[2]), since: () => S.round }; }
+  if (t === "c" && CAT[n]) { return { id: p, title: CAT[n][0] + " " + CAT[n][1], sub: `${CAT[n][2].length} פרקים לפי ספר שמוש תהלים`, ks: CAT[n][2].map(String), since: () => S.round }; }
+  return null;
+}
+function todayPid() {
+  const d = today();
+  if (S.mode === "w") return "w" + d.getDay();
+  const hd = hebOf(d).d; return hd === 29 && monthLen(d) === 29 ? "m29s" : "m" + hd;
+}
+const isDoneK = (k, since) => unitsOf(k).every(u => (S.done[u] || 0) >= since);
+const cntSince = (since, ks) => (ks ? ks.flatMap(unitsOf) : ULIST).filter(u => (S.done[u] || 0) >= since).length;
+const sizeOf = ks => ks.flatMap(unitsOf).length;
+const pctP = P => Math.round(cntSince(P.since(), P.ks) / sizeOf(P.ks) * 100);
+const roundPct = () => Math.round(cntSince(S.round) / TOTAL * 100);
+
+/* ---------- ניתוב ---------- */
+let route = { v: "home" };
+let lastHash = null, booted = false, navIdx = 0, navMax = 0;
+try { if (/[?&]r=\d+/.test(location.search)) history.replaceState(history.state, "", location.pathname + location.hash); } catch (e) {}
+if (history.state && Number.isInteger(history.state.i)) navIdx = navMax = history.state.i; else try { history.replaceState({ i: 0 }, ""); } catch (e) {}
+const urlOf = r => "#" + r.v + (r.k ? "/" + r.k : "") + (r.p ? "/" + r.p : "");
+function go(r, replace) {
+  route = r;
+  if (replace) history.replaceState({ i: navIdx }, "", urlOf(r)); else { navIdx++; navMax = navIdx; history.pushState({ i: navIdx }, "", urlOf(r)); }
+  lastHash = location.hash; closeSheet(); render();
+}
+function fromHash() {
+  if (location.hash === lastHash) return; booted = true; lastHash = location.hash;
+  const [v, a, b] = location.hash.slice(1).split("/");
+  if (v === "read" && validK(a)) route = { v, k: a, p: portion(b) ? b : null };
+  else if (v === "p" && portion(a)) route = { v, p: a };
+  else if (["chapters", "books", "days", "weeks", "needs", "progress"].includes(v)) route = { v };
+  else route = { v: "home" };
+  closeSheet(); render();
+}
+window.addEventListener("popstate", e => { navIdx = e.state && Number.isInteger(e.state.i) ? e.state.i : 0; lastHash = null; fromHash(); });
+window.addEventListener("hashchange", fromHash);
+const navBack = () => `<button class="nv" data-navback aria-label="חזרה אחורה" ${navIdx > 0 ? "" : "disabled"}><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></button>`;
+const navFwd = () => `<button class="nv" data-navfwd aria-label="קדימה" ${navIdx < navMax ? "" : "disabled"}><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>`;
+
+/* ---------- טעינת טקסט ופירושים ---------- */
+let TX = null, txFail = false, txLoading = false;
+function loadText() {
+  if (TX || txLoading) return; txLoading = true; txFail = false;
+  fetch("text.json").then(r => { if (!r.ok) throw 0; return r.json(); }).then(j => { TX = j; }).catch(() => { txFail = true; })
+    .finally(() => { txLoading = false; if (route.v === "read" || (route.v === "home" && S.bm)) { route.keep = true; render(); } });
+}
+const MAL = {}, malFail = {}, ST = {}, stFail = {}, stLoad = {};
+function loadMal(c) {
+  if (MAL[c] || MAL[c] === null) return; MAL[c] = null;
+  fetch("mal/" + c + ".json").then(r => { if (!r.ok) throw 0; return r.json(); }).then(j => { MAL[c] = j; })
+    .catch(() => { delete MAL[c]; malFail[c] = 1; }).finally(() => { if (route.v === "read" && tgt(route.k).c === c) { route.keep = true; render(); } else if ($("#malsrc")) $("#malsrc").innerHTML = malOpen(c); });
+}
+/* פירוש שטיינזלץ נטען ישירות מספריא (זכויות: מרכז שטיינזלץ), ונשמר במכשיר לשימוש בלי חיבור */
+function loadSt(c) {
+  if (ST[c] || stLoad[c]) return; stLoad[c] = 1; delete stFail[c];
+  fetch("https://www.sefaria.org/api/v3/texts/Steinsaltz_on_Psalms." + c + "?version=primary").then(r => { if (!r.ok) throw 0; return r.json(); })
+    .then(j => { const t = j && j.versions && j.versions[0] && j.versions[0].text; if (!Array.isArray(t)) throw 0; ST[c] = t; })
+    .catch(() => { stFail[c] = 1; }).finally(() => { delete stLoad[c]; if (route.v === "read" && tgt(route.k).c === c) { route.keep = true; render(); } });
+}
+window.addEventListener("online", () => { txFail = false; for (const k in stFail) delete stFail[k]; for (const k in malFail) delete malFail[k]; if (route.v === "read") { route.keep = true; render(); } });
+const clean = s => String(s || "").replace(/<(?!\/?b>)[^>]*>/g, "").replace(/&nbsp;/g, " ").replace(/&thinsp;/g, "");
+const malOpen = c => MAL[c] ? (MAL[c].slice(0, 2).flat().map(x => `<p>${clean(x)}</p>`).join("") || "<p>אין פתיחה למלבי״ם בפרק זה.</p>") : (malFail[c] ? "לא הצלחנו לטעון. נדרש חיבור לאינטרנט." : "טוען…");
+
+/* ---------- קישורים ---------- */
+function audioLink(c, compact) {
+  const sid = SPOTIFY_EP[c];
+  return sid ? `<a class="rl sp" href="https://open.spotify.com/episode/${sid}" target="_blank" rel="noopener">🎧 ${compact ? "שמע" : "שמע: הרב מוטי פרנקו · פרק " + gem(c)}</a>` : "";
+}
+const SHARE_URL = "https://rafi680890.github.io/tehillim/";
+const SHARE_TEXT = "📖 ספר תהילים: למה אומרים כל פרק, סיכום הפרק על פי המלבי״ם, פירוש שטיינזלץ, חלוקה לימי החודש והשבוע ומעקב התקדמות - בחינם וללא פרסומות.";
+async function shareApp(kind) {
+  const full = SHARE_TEXT + " " + SHARE_URL, e = encodeURIComponent;
+  if (kind === "wa") { window.open("https://wa.me/?text=" + e(full), "_blank", "noopener"); return; }
+  if (kind === "fb") { window.open("https://www.facebook.com/sharer/sharer.php?u=" + e(SHARE_URL), "_blank", "noopener"); return; }
+  if (kind === "tg") { window.open("https://t.me/share/url?url=" + e(SHARE_URL) + "&text=" + e(SHARE_TEXT), "_blank", "noopener"); return; }
+  const copy = async () => {
+    try { await navigator.clipboard.writeText(full); }
+    catch (er) { const t = document.createElement("textarea"); t.value = full; document.body.appendChild(t); t.select(); try { document.execCommand("copy"); } catch (e2) {} t.remove(); }
+    toast("הקישור הועתק ✓");
+  };
+  if (kind === "copy") { await copy(); return; }
+  try { if (navigator.share) { await navigator.share({ title: "תהילים", text: SHARE_TEXT, url: SHARE_URL }); return; } }
+  catch (er) { if (er && er.name === "AbortError") return; }
+  await copy();
+}
+const shareCard = () => `<div class="card sharecard"><div class="shh"><svg viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 10.5l6.8-4M8.6 13.5l6.8 4"/></svg>שתפו עם חברים ומשפחה</div><p class="shs">הקישור יישלח עם הסבר קצר על האפליקציה</p><div class="sgrid">
+<button class="sb wa" data-share="wa"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.2 14c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.3-.7-2.8-1.2-4.6-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.8s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.4 0 .5l-.4.6c-.1.2-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.3 2.4 1.5.3.1.4.1.6-.1l.8-1c.2-.2.3-.2.6-.1l1.9.9c.3.1.5.2.5.3.1.2.1.8-.1 1.3z"/></svg>ווטסאפ</button>
+<button class="sb fb" data-share="fb"><svg viewBox="0 0 24 24"><path d="M13.5 22v-8.2h2.8l.5-3.3h-3.3V8.4c0-1 .4-1.7 1.8-1.7H17V3.8c-.3-.1-1.3-.2-2.4-.2-2.5 0-4.1 1.5-4.1 4.2v2.7H7.7v3.3h2.8V22z"/></svg>פייסבוק</button>
+<button class="sb tg" data-share="tg"><svg viewBox="0 0 24 24"><path d="M21.5 3.5 2.7 10.8c-.9.3-.9 1.2 0 1.5l4.8 1.5 1.8 5.7c.2.6.9.8 1.4.4l2.6-2.2 4.7 3.5c.6.4 1.3.1 1.5-.6l3.2-15.2c.2-.9-.6-1.6-1.2-1.4zM9.7 14.3l8.2-5.1-6.5 6.2-.3 3.1z"/></svg>טלגרם</button>
+<button class="sb cp" data-share="copy"><svg viewBox="0 0 24 24"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3A4 4 0 0 0 11 18.7l1-1"/></svg>העתקת קישור</button></div>
+<button class="more" data-share="more"><svg viewBox="0 0 24 24"><path d="M12 15V3M7.5 7.5 12 3l4.5 4.5"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg>שתפו באפשרויות נוספות</button>
+<button class="help" data-installhelp>מופיעה אזהרה בהתקנה באנדרואיד? לחצו כאן</button></div>`;
+const installHelpHTML = () => `<button class="x" data-close aria-label="סגור">✕</button><h3 class="sh" style="margin-top:4px">בעיה בהתקנה באנדרואיד</h3>
+<p style="margin:0 0 10px">אם מופיעה הודעה <b>״Google Play Protect: אפליקציה לא בטוחה נחסמה״</b> - זו אזהרה כללית של אנדרואיד על אפליקציות אינטרנט, והאפליקציה עצמה בטוחה (היא אתר, בלי קבצים מסוכנים). אפשר להמשיך כך:</p>
+<ol class="help-steps"><li>בהודעה לחצו על <b>״פרטים נוספים״</b> ואז על <b>״התקן בכל זאת״</b>.</li>
+<li>אם אין כפתור כזה: ב-Chrome פתחו את התפריט ⋮ ובחרו <b>״הוסף למסך הבית״</b>, ואז <b>״צור קיצור דרך״</b>.</li>
+<li>או פשוט המשיכו להשתמש באתר דרך הדפדפן, בלי להתקין.</li></ol>`;
+const APP_VERSION = "2026.11.21 (v1)";
+async function hardRefresh() {
+  if (!navigator.onLine) { toast("צריך חיבור לאינטרנט כדי לרענן"); return; }
+  toast("מרענן לגרסה החדשה…");
+  try {
+    if (navigator.serviceWorker) { const regs = await navigator.serviceWorker.getRegistrations(); await Promise.all(regs.map(r => r.unregister())); }
+    if (window.caches) { const ks = await caches.keys(); await Promise.all(ks.filter(k => k !== "tehillim-ext").map(k => caches.delete(k))); }
+  } catch (e) {}
+  location.replace(location.pathname + "?r=" + Date.now() + location.hash);
+}
+function footer(src) {
+  return `<footer class="ft"><div class="cp">© רפאל בטיט · כל הזכויות שמורות על עיצוב ופיתוח האפליקציה</div><div class="cp" style="margin-top:4px">אפליקציה חינמית, ללא פרסומות</div><div class="ver">גרסה ${APP_VERSION}</div><button class="refbtn" data-refresh>🔄 ריענון לגירסה חדשה</button><div class="vernote">הריענון מוריד את הגרסה העדכנית. ההתקדמות והסימניות שלך נשמרות.</div>${src ? `<div class="src">נוסח המקרא: מקרא על פי המסורה (MAM), ברישיון CC-BY-SA, באמצעות ספריא. פירוש המלבי״ם: נחלת הכלל, באמצעות ספריא. פירוש הרב עדין שטיינזלץ (תנ״ך קורן שטיינזלץ המבואר): כל הזכויות למרכז שטיינזלץ, נטען מאתר ספריא. ״למה הפרק״: על פי ספר שמוש תהלים (ויקיטקסט). תמצית הפרק היא ניסוח מקוצר על פי דברי המלבי״ם, ואינה ציטוט. שמע: הרב מוטי פרנקו (Spotify).</div>` : ""}</footer>`;
+}
+function tabs() {
+  const on = ["progress"].includes(route.v) ? "p" : "d", pct = route.v === "progress" ? roundPct() : pctP(portion(todayPid()));
+  return `<nav class="tabs">${navBack()}<button class="hl" data-go="progress" ${on === "p" ? 'aria-current="page"' : ""}><i>${pct}%</i>${I.chart}<span>התקדמות שלי</span></button><button class="${on === "d" ? "on" : ""}" data-go="home">${I.home}<span>דף הבית</span></button>${navFwd()}</nav>`;
+}
+const hdr = (title, back = "home") => `<header class="rh" style="margin-bottom:12px"><button class="home" data-go="${back}">${back === "home" ? I.home + "<span>דף הבית</span>" : I.chart + "<span>חזרה</span>"}</button><div class="rt">${title}</div></header>`;
+
+/* ---------- תצוגות ---------- */
+function portionCard(P, isToday) {
+  const pct = pctP(P), since = P.since();
+  const first = P.ks.find(k => !isDoneK(k, since)) || P.ks[0];
+  const chips = P.ks.map(k => `<button class="${isDoneK(k, since) ? "on" : ""} ${S.bm && S.bm.k === k ? "bm" : ""}" data-read="${k}" data-p="${P.id}">${kShort(k)}</button>`).join("");
+  return `<div class="card today"><small>${isToday ? (S.mode === "w" ? "השיעור היומי · לפי ימי השבוע" : "השיעור היומי · לפי ימי החודש") : "השיעור"}</small><h2>${P.title}</h2><div class="sub">${P.sub}</div>
+  <div class="mini"><span>${pct}%</span><div class="bar"><i style="width:${pct}%"></i></div><span>${cntSince(since, P.ks)}/${sizeOf(P.ks)}</span></div>
+  <div class="chips">${chips}</div>
+  <div class="row2"><button class="btn read" data-read="${first}" data-p="${P.id}"><span class="ic">${I.openbook}</span>${pct === 100 ? "לאמירה חוזרת" : pct > 0 ? "המשך לומר ‹" : "התחל לומר ‹"}</button></div>
+  <div class="row2"><button class="pbtn" data-prayer="before">🙏 תפילה לפני האמירה</button><button class="pbtn" data-prayer="after" data-pp="${P.id}">🙏 תפילה לאחר האמירה</button></div></div>`;
+}
+function homeView() {
+  const d = today(), P = portion(todayPid());
+  let bm = "";
+  if (S.bm) {
+    loadText(); const t = tgt(S.bm.k), vt = TX && TX[t.c - 1][S.bm.v] ? stripT(TX[t.c - 1][S.bm.v]).trim().split(/\s+/).slice(0, 7).join(" ") + " …" : "";
+    bm = `<div class="card bmcard"><div class="ico">${BMI}</div><div class="tx"><small>המשך מהמקום שעצרת</small><b>${kName(S.bm.k)} · פסוק ${gem(S.bm.v + 1)}</b>${vt ? `<span>${vt}</span>` : ""}</div><button class="go" data-read="${S.bm.k}" data-v="${S.bm.v}" ${S.bm.p ? `data-p="${S.bm.p}"` : ""} data-resume>המשך לומר ‹</button></div>`;
+  }
+  const rp = roundPct();
+  return `<div class="hero"><div class="htop"><div class="logo"><img src="logo.png" alt="קהילת אבני החושן"></div><div class="hded"><div><small>לעילוי נשמת</small><b>ר׳ אברהם בן ברכה</b></div><i></i><div><small>ולעילוי נשמת</small><b>חנה בת חג׳ילה</b></div><i></i><div><small>ולעילוי נשמת</small><b>שלום שלומי בן חנה</b></div></div></div><h1>ספר <b>תהילים</b></h1><p>למה אומרים כל פרק · סיכום המלבי״ם · פירוש שטיינזלץ</p><div class="orn">✦</div></div>
+  <div class="card datecard"><div class="he">${hebFmt(d)}</div><div class="gr">${wdFmt.format(d)} · ${pad(d.getDate())}.${pad(d.getMonth() + 1)}.${d.getFullYear()}</div>${todayShifted ? `<div class="gr" style="margin-top:6px;font-size:14px">🌙 היום העברי החל בשקיעה</div>` : ""}
+  <div class="swrow" style="margin-top:10px">חלוקה יומית:</div><div class="modes" style="margin-top:4px"><button class="sg ${S.mode === "m" ? "on" : ""}" data-mode="m">📅 לפי ימי החודש</button><button class="sg ${S.mode === "w" ? "on" : ""}" data-mode="w">🗓️ לפי ימי השבוע</button></div></div>
+  ${bm}${portionCard(P, true)}
+  <div class="card prog" data-go="progress" role="button" tabindex="0" style="cursor:pointer"><div class="ring" style="--p:${rp}"><i>${rp}%</i></div><div style="flex:1"><b style="font-size:18px">הסבב שלי בספר תהילים</b><div style="color:var(--mute);margin:2px 0 8px">${cntSince(S.round)} מתוך ${TOTAL} פרקים${S.rounds ? ` · ${S.rounds} סבבים הושלמו` : ""}</div><div class="bar"><i style="width:${rp}%"></i></div></div></div>
+  <div class="card"><h3 class="sh">📖 בחירת פרקים</h3><div class="choose">
+   <button data-go="chapters"><i>🔢</i><b>לפי פרקים</b><span>כל 150 הפרקים</span></button>
+   <button data-go="books"><i>📚</i><b>לפי ספרים</b><span>חמשת ספרי התהילים</span></button>
+   <button data-go="days"><i>📅</i><b>לפי ימי החודש</b><span>30 ימים בחודש</span></button>
+   <button data-go="weeks"><i>🗓️</i><b>לפי ימי השבוע</b><span>שבעה ימים</span></button>
+   <button class="wide" data-go="needs"><i>🙏</i><b>חיפוש לפי בקשה</b><span>רפואה, לידה, פרנסה, דרך, שלום בית ועוד</span></button></div></div>
+  ${reminderCard()}${shareCard()}${footer(true)}${tabs()}`;
+}
+function reminderCard() {
+  return `<div class="card"><h3 class="sh">${I.bell} תזכורת יומית</h3><div style="color:var(--mute);font-size:14px;margin-bottom:10px">מוסיפה ליומן שלך אירוע חוזר בכל יום עם התראה, וקישור ישיר לאפליקציה.</div>
+  <div class="remrow"><input type="time" id="remT" value="${S.remT}" aria-label="שעת התזכורת"><label><input type="checkbox" id="remShab" ${S.remShab ? "checked" : ""}> בלי שבת</label><button class="btn" data-remind>הוסף ליומן</button></div></div>`;
+}
+function chaptersView() {
+  let g = ""; for (let c = 1; c <= 150; c++) { const k = String(c), on = isDoneK(k, S.round); g += `<button class="${on ? "on" : ""} ${S.bm && tgt(S.bm.k).c === c ? "bm" : ""}" data-read="${k}" aria-label="פרק ${gem(c)}${segOf(c) ? " - " + esc(segOf(c)) : ""}">${gem(c)}</button>`; }
+  return hdr("לפי פרקים") + `<div class="card"><div class="bkhead">בחרו פרק</div><div class="grid">${g}</div><div style="color:var(--mute);font-size:13px;margin-top:10px">ירוק = נאמר בסבב הנוכחי · מסגרת זהב = סימניה</div></div>` + footer(false) + tabs();
+}
+const lrow = (P, cur) => { const pct = pctP(P); return `<button class="lrow ${cur ? "cur" : ""}" data-gop="${P.id}"><div class="t"><b>${P.title}${cur ? " · היום" : ""}</b><span>${P.sub}</span></div><span class="ck ${pct === 100 ? "on" : ""}" aria-label="${pct}%">${pct === 100 ? "✓" : pct ? pct + "%" : ""}</span></button>`; };
+function booksView() { return hdr("לפי ספרים") + BOOKS.map((_, i) => lrow(portion("b" + i))).join("") + footer(false) + tabs(); }
+function daysView() {
+  const tp = S.mode === "m" ? todayPid() : (hebOf(today()).d === 29 && monthLen(today()) === 29 ? "m29s" : "m" + hebOf(today()).d);
+  let h = ""; for (let n = 1; n <= 30; n++) h += lrow(portion("m" + n), tp === "m" + n);
+  if (monthLen(today()) === 29) h += lrow(portion("m29s"), tp === "m29s");
+  return hdr("לפי ימי החודש") + `<div style="color:var(--mute);font-size:14px;margin:0 4px 6px">החלוקה המקובלת לשלושים ימי החודש. בחודש חסר (29 יום) אומרים ביום כ״ט גם את פרקי יום ל׳.</div>` + h + footer(false) + tabs();
+}
+function weeksView() { const td = today().getDay(); let h = ""; for (let n = 0; n < 7; n++) h += lrow(portion("w" + n), n === td); return hdr("לפי ימי השבוע") + h + footer(false) + tabs(); }
+function needsView() {
+  return hdr("חיפוש לפי בקשה") + `<div style="color:var(--mute);font-size:14px;margin:0 4px 6px">בחרו את הבקשה, וקבלו את הפרקים שנזכרו לה בספר ״שמוש תהלים״.</div>` +
+    CAT.map((c, i) => `<button class="lrow" data-gop="c${i}"><span style="font-size:28px">${c[0]}</span><div class="t"><b>${c[1]}</b><span>פרקים ${c[2].map(gem).join(", ")}</span></div></button>`).join("") + footer(false) + tabs();
+}
+function portionView() {
+  const P = portion(route.p), since = P.since();
+  const rows = P.ks.map(k => { const c = tgt(k).c, on = isDoneK(k, since), sg = route.p[0] === "c" ? (T.seg[c] || "") : (T.seg[c] || "");
+    return `<div class="lrow"><button class="ck ${on ? "on" : ""}" data-toggle="${k}" data-p="${P.id}" aria-label="${on ? "בטל סימון" : "סמן כנאמר"}">${on ? "✓" : ""}</button><div class="t" data-read="${k}" data-p="${P.id}" role="button" tabindex="0" style="cursor:pointer"><b>${kName(k)}</b><span>${sg ? "🔹 " + esc(sg) : ""}</span></div><button class="go2" data-read="${k}" data-p="${P.id}">לאמירה ‹</button></div>`; }).join("");
+  const back = route.p[0] === "b" ? "books" : route.p[0] === "w" ? "weeks" : route.p[0] === "c" ? "needs" : "days";
+  return `<header class="rh" style="margin-bottom:12px"><button class="home" data-go="${back}"><span>‹ חזרה</span></button><div class="rt">${P.title}</div></header>${portionCard(P, false)}${rows}${footer(false)}${tabs()}`;
+}
+function progressView() {
+  let h = hdr("ההתקדמות שלי"), body = "";
+  const seg = [["d", "היום"], ["w", "השבוע"], ["m", "החודש"], ["r", "סבב שלם"]].map(([k, n]) => `<button class="${S.pv === k ? "on" : ""}" data-pv="${k}">${n}</button>`).join("");
+  const ring = (pct, title, sub) => `<div class="card prog"><div class="ring" style="--p:${pct}"><i>${pct}%</i></div><div style="flex:1"><b style="font-size:18px">${title}</b><div style="color:var(--mute);margin:2px 0 8px">${sub}</div><div class="bar"><i style="width:${pct}%"></i></div></div></div>`;
+  if (S.pv === "d") {
+    const P = portion(todayPid()), pct = pctP(P);
+    body = ring(pct, "השיעור של היום", `${P.title} · ${cntSince(P.since(), P.ks)} מתוך ${sizeOf(P.ks)} פרקים`) + portionCard(P, true);
+  } else if (S.pv === "w") {
+    const ws = weekStart(), pct = Math.round(cntSince(ws) / TOTAL * 100), td = today().getDay();
+    body = ring(pct, "השבוע", `${cntSince(ws)} מתוך ${TOTAL} פרקים נאמרו מיום ראשון`) + `<div class="card"><h3 class="sh">ימי השבוע</h3><div class="dgrid">${WEEK.map((ks, n) => `<button class="${isAll(ks, ws) ? "on" : ""} ${n === td ? "cur" : ""}" data-gop="w${n}">${["א׳", "ב׳", "ג׳", "ד׳", "ה׳", "ו׳", "ש״ק"][n]}<small>${kShort(ks[0])}–${kShort(ks[ks.length - 1])}</small></button>`).join("")}</div></div>`;
+  } else if (S.pv === "m") {
+    const ms = monthStart(), pct = Math.round(cntSince(ms) / TOTAL * 100), hd = hebOf(today()).d;
+    body = ring(pct, "החודש", `${cntSince(ms)} מתוך ${TOTAL} פרקים נאמרו מראש החודש`) + `<div class="card"><h3 class="sh">ימי החודש</h3><div class="dgrid">${MONTH.map((ks, i) => `<button class="${isAll(ks, ms) ? "on" : ""} ${i + 1 === hd ? "cur" : ""}" data-gop="m${i + 1}">${gem(i + 1)}<small>${kShort(ks[0])}${ks.length > 1 ? "–" + kShort(ks[ks.length - 1]) : ""}</small></button>`).join("")}</div></div>`;
+  } else {
+    const pct = roundPct();
+    body = ring(pct, "סבב שלם בספר תהילים", `${cntSince(S.round)} מתוך ${TOTAL} פרקים · התחלת ב-${new Date(S.round).toLocaleDateString("he-IL")}${S.rounds ? ` · ${S.rounds} סבבים הושלמו` : ""}`);
+    body += BOOKS.map((b, i) => { const ks = range(b[1], b[2]), k = cntSince(S.round, ks), n = sizeOf(ks); return `<button class="book" data-gop="b${i}"><div class="r"><b>${b[0]}</b><span>${k} / ${n}</span></div><div class="bar"><i style="width:${k / n * 100}%;background:var(--c${i % 3 + 1})"></i></div></button>`; }).join("");
+    body += `<div class="nav"><button class="${pct === 100 ? "p" : ""}" data-newround>${pct === 100 ? "🎉 סיימתי! התחל סבב חדש" : "↺ התחל סבב חדש"}</button></div>`;
+  }
+  h += `<div class="pseg">${seg}</div>${body}`;
+  h += `<div class="card"><h3 class="sh">💾 גיבוי ושחזור</h3><div style="color:var(--mute);font-size:14px;margin-bottom:8px">ההתקדמות נשמרת רק במכשיר הזה. כדאי לשמור גיבוי, כדי לא לאבד אותה כשעוברים למכשיר אחר.</div><div class="nav" style="justify-content:flex-start"><button data-bk="copy">העתק קוד גיבוי</button><button data-bk="file">שמור גיבוי לקובץ</button><button data-bk="restore">שחזר מקוד</button><button data-bk="load">שחזר מקובץ</button></div><input type="file" id="bkf" accept=".json,application/json" hidden></div>`;
+  return h + footer(false) + tabs();
+}
+const isAll = (ks, since) => ks.every(k => isDoneK(k, since));
+const stripT = s => s.replace(/[\u0591-\u05AF\u05C0]/g, "");
+const SEG119 = ["לרעד הגוף; למי שרוצה לקיים מצוה", "לשכחה ולפתיחת הלב", "לחשישת עין ימין", "לחשישת עין שמאל; כשקשה לו עצה", "להישמר מן החטא", "בכעס מושל על אדם", "לטחול; כשמסיתים אותו לעצה רעה", "לבטן העליונה", "לכאב הכליות", "לחסד – לאומרו אחר תפילת שחרית", "לנפיחות בצד ימין של האף", "לדין – לאומרו אחר תפילת מנחה", "לכאב יד ימין", "ליוצא לדרך – להינצל מכל צרה", "לפני בקשה – לאומרו ואחר כך לבקש", "לכאב יד שמאל", "לנפיחות בצד שמאל של האף", "", "לכאב רגל שמאל", "לכאב אוזן ימין", "לכאב ראש", "לכאב אוזן שמאל"];
+const LETTERS = "אבגדהוזחטיכלמנסעפצקרשת", LNAME = ["אָלֶף", "בֵּית", "גִּימֶל", "דָּלֶת", "הֵא", "וָו", "זַיִן", "חֵית", "טֵית", "יוֹד", "כַּף", "לָמֶד", "מֵם", "נוּן", "סָמֶךְ", "עַיִן", "פֵּא", "צָדִי", "קוֹף", "רֵישׁ", "שִׁין", "תָּו"];
+const markV = k => S.bm && S.bm.k === k ? S.bm.v : (route.resume && route.resume.k === k ? route.resume.v : null);
+const bmAt = (k, v) => S.bm && S.bm.k === k && S.bm.v === v;
+function seqOf() { const P = portion(route.p); return P ? P.ks : null; }
+function neighbors() {
+  const seq = seqOf(), k = route.k;
+  if (seq) { const i = seq.indexOf(k); return { prev: i > 0 ? seq[i - 1] : null, next: i >= 0 && i < seq.length - 1 ? seq[i + 1] : null, last: i === seq.length - 1 }; }
+  const c = tgt(k).c; return { prev: c > 1 ? String(c - 1) : null, next: c < 150 ? String(c + 1) : null, last: false };
+}
+function readView() {
+  const k = route.k, t = tgt(k), c = t.c, P = portion(route.p), since = P ? P.since() : S.round;
+  loadText(); loadMal(c); if (S.comm === "st") loadSt(c);
+  const head = `<header class="rh">${`<button class="home" data-go="home">${I.home}<span>דף הבית</span></button>`}${navBack()}${navFwd()}<span class="spacer"></span><button class="gear" data-set aria-label="הגדרות תצוגה">Aa</button><div class="rt2">תהילים ${kName(k).replace("פרק ", "פרק ")}${P ? `<div style="font-size:13px;font-weight:600;opacity:.85">${P.title}</div>` : ""}</div></header>`;
+  if (!TX) return head + (txFail ? `<div class="card" style="text-align:center;margin-top:24px"><div style="font-size:18px;font-weight:700">לא הצלחנו לטעון את הטקסט</div><div style="color:var(--mute);margin:6px 0 12px">בדוק את החיבור לאינטרנט ונסה שוב.</div><button class="btn read" style="margin:auto" data-retry>נסה שוב</button></div>` : `<div class="cmn" style="margin-top:40px;font-size:18px">טוען את הפרק…</div>`) + footer(true);
+  const sg = segOf(c);
+  const segBox = `<div class="seg-box"><small>🔹 למה אומרים את הפרק</small>${sg ? `<b>${esc(sg)}</b><button data-src="${c}">המקור בספר שמוש תהלים</button>` : `<div class="no">בספר שמוש תהלים לא נזכרה סגולה מיוחדת לפרק זה.</div>`}</div>`;
+  const tools = `<div class="tools"><button class="sumbtn" data-sum="${c}">📝 סיכום הפרק · המלבי״ם</button>${audioLink(c, false)}</div>
+   <div class="cmsel"><span>פירוש לכל פסוק:</span><div class="seg"><button class="${S.comm === "" ? "on" : ""}" data-comm="">ללא</button><button class="${S.comm === "st" ? "on" : ""}" data-comm="st">שטיינזלץ</button><button class="${S.comm === "ml" ? "on" : ""}" data-comm="ml">מלבי״ם</button></div></div>`;
+  const first = P && P.ks[0] === k ? `<div style="text-align:center;margin:4px 0"><button class="pbtn" data-prayer="before">🙏 תפילה לפני האמירה</button></div>` : "";
+  const hint = !S.hintBm && !S.bm ? `<div class="hint"><div>💡 <b>עצרתם באמצע?</b> לחצו על מספר <b>הפסוק הבא</b> שעוד לא אמרתם. הקו יסמן עד היכן הגעתם, ובפעם הבאה תמשיכו בדיוק משם.</div><button data-hint>הבנתי</button></div>` : "";
+  let cmNote = "";
+  if (S.comm === "st" && !ST[c]) cmNote = `<div class="cmn">${stFail[c] ? "פירוש שטיינזלץ נטען מאתר ספריא ודורש חיבור לאינטרנט (אחרי טעינה ראשונה הוא נשמר במכשיר). <button class='pbtn' data-retryst>נסה שוב</button>" : "טוען את פירוש שטיינזלץ…"}</div>`;
+  if (S.comm === "ml" && !MAL[c]) cmNote = `<div class="cmn">${malFail[c] ? "לא הצלחנו לטעון את פירוש המלבי״ם." : "טוען את פירוש המלבי״ם…"}</div>`;
+  const vs = TX[c - 1]; let tx = "";
+  for (let i = t.a; i <= t.z; i++) {
+    const v = vs[i] || ""; const pb = v.endsWith("\n");
+    if (c === 119 && i % 8 === 0) tx += `<span class="lh">${LETTERS[i / 8]} · ${LNAME[i / 8]}${SEG119[i / 8] ? `<small class="lseg">🔹 ${SEG119[i / 8]}</small>` : ""}</span>`;
+    if (markV(k) === i) tx += bmAt(k, i) ? `<div class="bmline" id="bmline"><span>🔖 עד כאן אמרתי</span><button data-bmclear>הסר</button></div>` : `<div class="bmline" id="bmline"><span>🔖 כאן עצרת בפעם הקודמת</span></div>`;
+    tx += `<span class="v ${markV(k) === i ? "bm" : ""} ${route.pulseV === i && Date.now() < route.pulseUntil ? "pulse" : ""}" id="v${i}"><button class="vn ${bmAt(k, i) ? "on" : ""}" data-bm="${i}" aria-pressed="${bmAt(k, i)}" aria-label="סימניה: עד כאן אמרתי, לפני פסוק ${gem(i + 1)}">${gem(i + 1)}${BMI}</button>${(S.taamim ? v : stripT(v)).trim()} </span>`;
+    if (S.comm === "st" && ST[c] && ST[c][i]) tx += `<span class="cm">${clean(ST[c][i])}</span>`;
+    else if (S.comm === "ml" && MAL[c] && MAL[c][i] && MAL[c][i].length) tx += `<span class="cm ml">${MAL[c][i].map(x => `<p>${clean(x)}</p>`).join("")}</span>`;
+    else if (pb) tx += '<span class="pb"></span>';
+  }
+  const done = isDoneK(k, since), nb = neighbors();
+  const endCard = (!P || nb.last) ? `<div class="card donecard"><b>${P ? "סיימתם את " + P.title + "! חזק וברוך" : "סיימתם את הפרק"}</b>${!done ? `<button class="btn chk" data-toggle="${k}" ${P ? `data-p="${P.id}"` : ""}>${I.check} סמן כנאמר</button> ` : ""}<button class="pbtn" data-prayer="after" ${P ? `data-pp="${P.id}"` : ""}>🙏 תפילה לאחר האמירה</button></div>` : "";
+  return head + segBox + tools + first + hint + cmNote + `<div class="text" style="--fs:${S.fs}px">${tx}</div>` + endCard + footer(true) +
+    `<div class="rbar"><button data-prevk ${nb.prev ? "" : "disabled"}>› הקודם<small>${nb.prev ? kShort(nb.prev) : ""}</small></button><button class="learn ${done ? "on" : ""}" data-toggle="${k}" ${P ? `data-p="${P.id}"` : ""}>${done ? "✓ נאמר" : "סמן כנאמר"}</button><button class="next" data-nextk ${nb.next ? "" : "disabled"}>הבא ‹<small>${nb.next ? kShort(nb.next) : ""}</small></button></div>`;
+}
+let lastBm = null;
+function pulseVerse(v, el) { route.pulseV = v; route.pulseUntil = Date.now() + 2800; el.classList.remove("pulse"); void el.offsetWidth; el.classList.add("pulse"); }
+function render() {
+  const sy = window.scrollY, app = $("#app"), V = { read: readView, p: portionView, chapters: chaptersView, books: booksView, days: daysView, weeks: weeksView, needs: needsView, progress: progressView };
+  app.innerHTML = (V[route.v] || homeView)();
+  if (route.v === "read") {
+    const t = route.scrollV != null ? route.scrollV : markV(route.k), el = t != null ? $("#v" + t) : null;
+    if (route.keep) window.scrollTo(0, sy); else if (el) { el.scrollIntoView({ block: "center" }); pulseVerse(t, el); } else window.scrollTo(0, 0);
+    route.keep = false; route.scrollV = null;
+  } else if (route.keep) { window.scrollTo(0, sy); route.keep = false; } else window.scrollTo(0, 0);
+}
+
+/* ---------- תפילות (נוסח ספרדי מקובל) ---------- */
+const BEFORE = `<h4>קודם אמירת תהילים</h4><p>לְכוּ נְרַנְּנָה לַה׳ נָרִיעָה לְצוּר יִשְׁעֵנוּ: נְקַדְּמָה פָנָיו בְּתוֹדָה בִּזְמִרוֹת נָרִיעַ לוֹ: כִּי אֵל גָּדוֹל ה׳ וּמֶלֶךְ גָּדוֹל עַל כָּל אֱלֹהִים:</p>
+<h4>יהי רצון קודם אמירת תהילים</h4><p>יְהִי רָצוֹן מִלְּפָנֶיךָ ה׳ אֱלֹהֵינוּ וֵאלֹהֵי אֲבוֹתֵינוּ, הַבּוֹחֵר בְּדָוִד עַבְדּוֹ וּבְזַרְעוֹ אַחֲרָיו, וְהַבּוֹחֵר בְּשִׁירוֹת וְתִשְׁבָּחוֹת, שֶׁתֵּפֶן בְּרַחֲמִים אֶל קְרִיאַת מִזְמוֹרֵי תְהִלִּים שֶׁאֶקְרָא, כְּאִלּוּ אֲמָרָם דָּוִד הַמֶּלֶךְ עָלָיו הַשָּׁלוֹם בְּעַצְמוֹ, זְכוּתוֹ יָגֵן עָלֵינוּ. וְיַעֲמוֹד לָנוּ זְכוּת פְּסוּקֵי תְהִלִּים וּזְכוּת תֵּבוֹתֵיהֶם וְאוֹתִיּוֹתֵיהֶם וּנְקֻדּוֹתֵיהֶם וְטַעֲמֵיהֶם, וְהַשֵּׁמוֹת הַיּוֹצְאִים מֵהֶם מֵרָאשֵׁי תֵבוֹת וּמִסּוֹפֵי תֵבוֹת, לְכַפֵּר פְּשָׁעֵינוּ וַעֲוֹנוֹתֵינוּ וְחַטֹּאתֵינוּ, וּלְזַמֵּר עָרִיצִים וּלְהַכְרִית כָּל הַחוֹחִים וְהַקּוֹצִים הַסּוֹבְבִים אֶת הַשּׁוֹשַׁנָּה הָעֶלְיוֹנָה, וּלְחַבֵּר אֵשֶׁת נְעוּרִים עִם דּוֹדָהּ בְּאַהֲבָה וְאַחֲוָה וְרֵעוּת. וּמִשָּׁם יִמָּשֵׁךְ לָנוּ שֶׁפַע לְנֶפֶשׁ רוּחַ וּנְשָׁמָה, לְטַהֲרֵנוּ מֵעֲוֹנוֹתֵינוּ וְלִסְלֹחַ חַטֹּאתֵינוּ וּלְכַפֵּר פְּשָׁעֵינוּ, כְּמוֹ שֶׁסָּלַחְתָּ לְדָוִד שֶׁאָמַר מִזְמוֹרִים אֵלּוּ לְפָנֶיךָ, כְּמוֹ שֶׁנֶּאֱמַר: גַּם ה׳ הֶעֱבִיר חַטָּאתְךָ לֹא תָמוּת. וְאַל תִּקָּחֵנוּ מֵהָעוֹלָם הַזֶּה קֹדֶם זְמַנֵּנוּ, עַד מְלֹאת שְׁנוֹתֵינוּ בָּהֶם שִׁבְעִים שָׁנָה, בְּאֹפֶן שֶׁנּוּכַל לְתַקֵּן אֵת אֲשֶׁר שִׁחַתְנוּ. וּזְכוּת דָּוִד הַמֶּלֶךְ עָלָיו הַשָּׁלוֹם יָגֵן עָלֵינוּ וּבַעֲדֵנוּ, שֶׁתַּאֲרִיךְ אַפְּךָ עַד שׁוּבֵנוּ אֵלֶיךָ בִּתְשׁוּבָה שְׁלֵמָה לְפָנֶיךָ, וּמֵאוֹצַר מַתְּנַת חִנָּם חָנֵּנוּ, כְּדִכְתִיב: וְחַנֹּתִי אֶת אֲשֶׁר אָחֹן וְרִחַמְתִּי אֶת אֲשֶׁר אֲרַחֵם. וּכְשֵׁם שֶׁאָנוּ אוֹמְרִים לְפָנֶיךָ שִׁירָה בָּעוֹלָם הַזֶּה, כָּךְ נִזְכֶּה לוֹמַר לְפָנֶיךָ ה׳ אֱלֹהֵינוּ שִׁיר וּשְׁבָחָה לָעוֹלָם הַבָּא. וְעַל יְדֵי אֲמִירַת תְּהִלִּים תִּתְעוֹרֵר חֲבַצֶּלֶת הַשָּׁרוֹן, וְלָשִׁיר בְּקוֹל נָעִים בְּגִילַת וְרַנֵּן, כְּבוֹד הַלְּבָנוֹן נִתַּן לָהּ, הוֹד וְהָדָר בְּבֵית אֱלֹהֵינוּ, בִּמְהֵרָה בְיָמֵינוּ, אָמֵן סֶלָה.</p>`;
+const ORD = ["רִאשׁוֹן", "שֵׁנִי", "שְׁלִישִׁי", "רְבִיעִי", "חֲמִישִׁי"], AGAINST = ["בְּרֵאשִׁית", "שְׁמוֹת", "וַיִּקְרָא", "בְּמִדְבַּר", "דְּבָרִים"];
+const AFTER = b => `<h4>לאחר אמירת תהילים</h4><p>מִי יִתֵּן מִצִּיּוֹן יְשׁוּעַת יִשְׂרָאֵל בְּשׁוּב ה׳ שְׁבוּת עַמּוֹ יָגֵל יַעֲקֹב יִשְׂמַח יִשְׂרָאֵל: וּתְשׁוּעַת צַדִּיקִים מֵה׳ מָעוּזָּם בְּעֵת צָרָה: וַיַּעְזְרֵם ה׳ וַיְפַלְּטֵם יְפַלְּטֵם מֵרְשָׁעִים וְיוֹשִׁיעֵם כִּי חָסוּ בוֹ:</p>
+<h4>יהי רצון לאחר אמירת ${["ספר ראשון", "ספר שני", "ספר שלישי", "ספר רביעי", "ספר חמישי"][b]}</h4><p>יְהִי רָצוֹן מִלְּפָנֶיךָ ה׳ אֱלֹהֵינוּ וֵאלֹהֵי אֲבוֹתֵינוּ, בִּזְכוּת סֵפֶר ${ORD[b]} שֶׁבַּתְּהִלִּים שֶׁקָּרִינוּ לְפָנֶיךָ, שֶׁהוּא כְּנֶגֶד סֵפֶר ${AGAINST[b]}, בִּזְכוּת מִזְמוֹרָיו, וּבִזְכוּת פְּסוּקָיו, וּבִזְכוּת תֵּבוֹתָיו, וּבִזְכוּת אוֹתִיּוֹתָיו, וּבִזְכוּת נְקֻדּוֹתָיו, וּבִזְכוּת טְעָמָיו, וּבִזְכוּת שְׁמוֹתֶיךָ הַקְּדוֹשִׁים וְהַטְּהוֹרִים הַיּוֹצְאִים מִמֶּנּוּ, שֶׁתְּכַפֵּר לָנוּ עַל כָּל חַטֹּאתֵינוּ, וְתִסְלַח לָנוּ עַל כָּל עֲוֹנוֹתֵינוּ, וְתִמְחַל לָנוּ עַל כָּל פְּשָׁעֵינוּ שֶׁחָטָאנוּ וְשֶׁעָוִינוּ וְשֶׁפָּשַׁעְנוּ לְפָנֶיךָ, וְהַחֲזִירֵנוּ בִּתְשׁוּבָה שְׁלֵמָה לְפָנֶיךָ, וְהַדְרִיכֵנוּ לַעֲבוֹדָתֶךָ, וְתִפְתַּח לִבֵּנוּ בְּתַלְמוּד תּוֹרָתֶךָ, וְתִשְׁלַח רְפוּאָה שְׁלֵמָה לְחוֹלֵי עַמֶּךָ, וְתִקְרָא לִשְׁבוּיִים דְּרוֹר וְלַאֲסוּרִים פְּקַח קוֹחַ, וּלְכָל הוֹלְכֵי דְרָכִים וְעוֹבְרֵי יַמִּים וּנְהָרוֹת מֵעַמְּךָ יִשְׂרָאֵל תַּצִּילֵם מִכָּל צַעַר וָנֵזֶק, וְתַגִּיעֵם לִמְחוֹז חֶפְצָם לְחַיִּים וּלְשָׁלוֹם, וְתִפְקֹד לְכָל חֲשׂוּכֵי בָנִים בְּזֶרַע שֶׁל קַיָּמָא לַעֲבוֹדָתֶךָ וּלְיִרְאָתֶךָ, וְהַנָּשִׁים הַמְעֻבָּרוֹת שֶׁל עַמְּךָ בֵּית יִשְׂרָאֵל תַּצִּילֵן שֶׁלֹּא תַפֵּלְנָה וַלְדוֹתֵיהֶן, וְהַיּוֹשְׁבוֹת עַל הַמַּשְׁבֵּר לֹא יֶאֱרַע לָהֶן שׁוּם צַעַר וָנֵזֶק, וְהַמֵּינִיקוֹת לֹא יֶחְסַר לָהֶן חָלָב, וְאַל יִשְׁלוֹט אַסְכָּרָא וְשֵׁדִין וְרוּחִין וְלִילִין וְכָל פְּגָעִים וּמַרְעִין בִּישִׁין בְּכָל יַלְדֵי עַמְּךָ בֵּית יִשְׂרָאֵל, וּתְגַדְּלֵם לְתוֹרָתֶךָ לִלְמוֹד תּוֹרָה לִשְׁמָהּ, וְתַצִּילֵם מֵעַיִן הָרָע וּמִדֶּבֶר וּמִמַּגֵּפָה וּמִשָּׂטָן וּמִיֵּצֶר הָרָע, וּתְבַטֵּל מֵעָלֵינוּ וּמִכָּל עַמְּךָ בֵּית יִשְׂרָאֵל בְּכָל מָקוֹם שֶׁהֵם כָּל גְּזֵרוֹת קָשׁוֹת וְרָעוֹת, וְתַטֶּה לֵב הַמַּלְכוּת עָלֵינוּ לְטוֹבָה, וְתִגְזוֹר עָלֵינוּ גְּזֵרוֹת טוֹבוֹת, וְתִשְׁלַח בְּרָכָה וְהַצְלָחָה בְּכָל מַעֲשֵׂה יָדֵינוּ, וְהָכֵן פַּרְנָסָתֵנוּ מִיָּדְךָ הַטּוֹבָה וְהָרְחָבָה, וְלֹא נִצְטָרֵךְ לִידֵי מַתְּנַת בָּשָׂר וָדָם וְלֹא לִידֵי הַלְוָאָתָם, וְתֵן לְכָל אִישׁ וָאִישׁ דֵּי פַרְנָסָתוֹ, וּלְכָל גְּוִיָּה וּגְוִיָּה דֵּי מַחְסוֹרָהּ, וּתְמַהֵר וְתָחִישׁ לְגָאֳלֵנוּ, וְתִבְנֶה בֵּית מִקְדָּשֵׁנוּ וְתִפְאַרְתֵּנוּ. וּבִזְכוּת שְׁלֹשׁ עֶשְׂרֵה מִדּוֹתֶיךָ שֶׁל רַחֲמִים הַכְּתוּבוֹת בְּתוֹרָתֶךָ, כְּמוֹ שֶׁנֶּאֱמַר: ה׳ ה׳ אֵל רַחוּם וְחַנּוּן אֶרֶךְ אַפַּיִם וְרַב חֶסֶד וֶאֱמֶת: נֹצֵר חֶסֶד לָאֲלָפִים נֹשֵׂא עָוֹן וָפֶשַׁע וְחַטָּאָה וְנַקֵּה. שֶׁאֵינָן חוֹזְרוֹת רֵיקָם מִלְּפָנֶיךָ, עָזְרֵנוּ אֱלֹהֵי יִשְׁעֵנוּ עַל דְּבַר כְּבוֹד שְׁמֶךָ, וְהַצִּילֵנוּ וְכַפֵּר עַל חַטֹּאתֵינוּ לְמַעַן שְׁמֶךָ. בָּרוּךְ ה׳ לְעוֹלָם אָמֵן וְאָמֵן.</p>`;
+function prayerHTML(kind, b) {
+  const sel = kind === "after" ? `<div class="seg" style="flex-wrap:wrap;margin:8px 0">${BOOKS.map((x, i) => `<button class="${i === b ? "on" : ""}" data-prayer="after" data-pb="${i}">${x[0]}</button>`).join("")}</div><div style="font-size:13px;color:var(--mute)">בחרו את הספר שממנו אמרתם (נבחר אוטומטית לפי הפרק האחרון)</div>` : "";
+  return `<button class="x" data-close aria-label="סגור">✕</button><h3 class="sh" style="margin-top:4px">🙏 ${kind === "before" ? "תפילה לפני אמירת תהילים" : "תפילה לאחר אמירת תהילים"}</h3>${sel}<div class="prayer" style="--fs:${S.fs}px">${kind === "before" ? BEFORE : AFTER(b)}</div><div class="srcnote">נוסח ספרדי מקובל, כפי שנדפס בספרי תהילים.</div>`;
+}
+
+/* ---------- חלונות קופצים ---------- */
+let prevFocus = null;
+function closeSheet() {
+  const ov = $("#ov"), was = ov.classList.contains("show");
+  ov.classList.remove("show"); document.body.style.overflow = ""; $("#app").removeAttribute("aria-hidden"); $("#app").removeAttribute("inert");
+  if (was && prevFocus && document.contains(prevFocus)) prevFocus.focus();
+  prevFocus = null;
+}
+function openSheet(html) {
+  const ov = $("#ov"); if (!ov.classList.contains("show")) prevFocus = document.activeElement;
+  $("#sheet").innerHTML = html; ov.classList.add("show"); document.body.style.overflow = "hidden"; $("#app").setAttribute("aria-hidden", "true"); $("#app").setAttribute("inert", "");
+  ($("#sheet .x") || $("#sheet")).focus(); $("#sheet").scrollTop = 0;
+}
+function sumHTML(c) {
+  loadMal(c);
+  return `<button class="x" data-close aria-label="סגור">✕</button><h3 class="sh" style="margin-top:4px">📝 סיכום פרק ${gem(c)}</h3><div class="sumtxt">${esc(T.sum[c])}</div>
+  <div class="srcnote">התמצית נכתבה על פי דברי המלבי״ם בפתיחתו לפרק, בניסוח מקוצר ובלשון ימינו.</div>
+  <div class="nav" style="justify-content:flex-start"><button data-malsrc="${c}">📜 המלבי״ם במקור</button></div><div class="malsrc" id="malsrc" hidden></div>`;
+}
+function srcHTML(c) {
+  return `<button class="x" data-close aria-label="סגור">✕</button><h3 class="sh" style="margin-top:4px">🔹 למה אומרים את פרק ${gem(c)}</h3><div class="sumtxt">${esc(segOf(c))}</div>
+  <div class="lbl">לשון ספר ״שמוש תהלים״</div><div class="origtxt">${esc(T.src[c] || "")}</div><div class="srcnote">מתוך ספר ״שמוש תהלים״ (מיוחס לרב האי גאון), על פי ויקיטקסט. הסגולות מובאות כפי שהן במקור, ואין בהן כדי להורות הלכה למעשה.</div>`;
+}
+function settingsHTML() {
+  const th = [["auto", "אוטומטי", "linear-gradient(90deg,#f4efe4 50%,#12161c 50%)"], ["light", "יום", "#f4efe4"], ["sepia", "קלף", "#efe2c3"], ["dark", "לילה", "#12161c"]];
+  const sw = (k, on) => `<button class="sw ${on ? "on" : ""}" data-sw="${k}" role="switch" aria-checked="${on}"></button>`;
+  return `<button class="x" data-close aria-label="סגור">✕</button><h3 class="sh" style="margin-top:4px">הגדרות תצוגה</h3>
+  <div class="row"><span>גודל הכתב</span><div class="seg"><button data-fs="-2">א−</button><button class="on" disabled>${S.fs}</button><button data-fs="2">א+</button></div></div>
+  <div class="row"><span>טעמי המקרא</span>${sw("taamim", S.taamim)}</div>
+  <div class="row"><span>היום מתחלף בשקיעה <small style="color:var(--mute)">(כמו התאריך העברי)</small></span>${sw("sunset", S.sunset)}</div>
+  <div style="margin-top:12px;font-weight:700">מצב תצוגה</div>
+  <div class="themes" style="margin-top:8px">${th.map(([k, n, c]) => `<button class="${S.theme === k ? "on" : ""}" data-th="${k}"><i style="background:${c}"></i>${n}</button>`).join("")}</div>`;
+}
+
+/* ---------- תזכורת ביומן (קובץ ics) ---------- */
+function remind() {
+  const tm = ($("#remT") && $("#remT").value) || S.remT, noShab = $("#remShab") ? $("#remShab").checked : S.remShab;
+  S.remT = tm; S.remShab = noShab; save();
+  const n = new Date(), [hh, mm] = tm.split(":"), ds = `${n.getFullYear()}${pad(n.getMonth() + 1)}${pad(n.getDate())}T${hh}${mm}00`;
+  const st = n.toISOString().replace(/[-:]/g, "").replace(/\.\d+/, "");
+  const ics = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//tehillim-app//HE", "CALSCALE:GREGORIAN", "BEGIN:VEVENT", "UID:tehillim-" + Date.now() + "@tehillim-app", "DTSTAMP:" + st, "DTSTART:" + ds, "DURATION:PT15M",
+    "RRULE:FREQ=DAILY" + (noShab ? ";BYDAY=SU,MO,TU,WE,TH,FR" : ""), "SUMMARY:📖 אמירת תהילים", "DESCRIPTION:השיעור היומי בספר תהילים: " + SHARE_URL, "URL:" + SHARE_URL,
+    "BEGIN:VALARM", "TRIGGER:PT0M", "ACTION:DISPLAY", "DESCRIPTION:זמן לומר תהילים", "END:VALARM", "END:VEVENT", "END:VCALENDAR"].join("\r\n");
+  const name = "tehillim-reminder.ics", f = typeof File === "function" ? new File([ics], name, { type: "text/calendar" }) : null;
+  if (f && navigator.canShare && navigator.canShare({ files: [f] })) { navigator.share({ files: [f], title: "תזכורת תהילים" }).catch(() => {}); return; }
+  const url = URL.createObjectURL(new Blob([ics], { type: "text/calendar" })), a = document.createElement("a"); a.href = url; a.download = name; document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 4000); toast("נוצר קובץ תזכורת – פתחו אותו כדי להוסיף ליומן");
+}
+
+/* ---------- סימון ---------- */
+function toggleK(k, p) {
+  const P = portion(p), since = P ? P.since() : S.round, us = unitsOf(k);
+  if (isDoneK(k, since)) { us.forEach(u => delete S.done[u]); toast("הסימון בוטל"); }
+  else {
+    const was = cntSince(S.round); us.forEach(u => S.done[u] = Date.now());
+    if (P && isAll(P.ks, since)) toast("🎉 סיימתם את " + P.title + "!"); else toast("סומן כנאמר ✓");
+    if (was < TOTAL && cntSince(S.round) === TOTAL) setTimeout(() => toast("🎉 השלמתם סבב שלם בספר תהילים!"), 1900);
+  }
+  save(); route.keep = true; render();
+}
+
+/* ---------- אירועים ---------- */
+document.addEventListener("click", e => {
+  if (e.target.id === "ov") return closeSheet();
+  const t = e.target.closest("[data-go],[data-gop],[data-read],[data-toggle],[data-mode],[data-bm],[data-fs],[data-set],[data-sw],[data-th],[data-close],[data-nextk],[data-prevk],[data-hint],[data-undo],[data-share],[data-installhelp],[data-bmclear],[data-retry],[data-retryst],[data-bk],[data-navback],[data-navfwd],[data-refresh],[data-prayer],[data-sum],[data-src],[data-malsrc],[data-comm],[data-pv],[data-newround],[data-remind]");
+  if (!t) return;
+  const D = t.dataset;
+  if (t.hasAttribute("data-close")) closeSheet();
+  else if (t.hasAttribute("data-set")) openSheet(settingsHTML());
+  else if (D.sw) { S[D.sw] = !S[D.sw]; save(); if (D.sw === "sunset") checkDayRoll(); t.classList.toggle("on", S[D.sw]); t.setAttribute("aria-checked", S[D.sw]); route.keep = true; render(); }
+  else if (D.th) { S.theme = D.th; applyTheme(); save(); document.querySelectorAll("#sheet [data-th]").forEach(b => b.classList.toggle("on", b.dataset.th === S.theme)); }
+  else if (D.fs && t.closest("#sheet")) { S.fs = Math.min(48, Math.max(16, S.fs + +D.fs)); save(); const tx = $(".text"); if (tx) tx.style.setProperty("--fs", S.fs + "px"); const lb = t.parentElement.querySelector(".on"); if (lb) lb.textContent = S.fs; }
+  else if (t.hasAttribute("data-refresh")) hardRefresh();
+  else if (t.hasAttribute("data-navback")) { if (navIdx > 0) history.back(); }
+  else if (t.hasAttribute("data-navfwd")) { if (navIdx < navMax) history.forward(); }
+  else if (D.prayer) { const pp = D.pp ? portion(D.pp) : null, last = pp ? pp.ks[pp.ks.length - 1] : (route.v === "read" ? route.k : "150"); const b = D.pb != null ? +D.pb : Math.max(0, bookOf(tgt(last).c)); openSheet(prayerHTML(D.prayer, b)); }
+  else if (D.sum) openSheet(sumHTML(+D.sum));
+  else if (D.src) openSheet(srcHTML(+D.src));
+  else if (D.malsrc) { const el = $("#malsrc"); el.hidden = !el.hidden; el.innerHTML = malOpen(+D.malsrc); }
+  else if (D.comm != null) { S.comm = D.comm; save(); route.keep = true; render(); }
+  else if (D.pv) { S.pv = D.pv; save(); route.keep = true; render(); }
+  else if (D.mode) { S.mode = D.mode; save(); toast(S.mode === "m" ? "חלוקה לפי ימי החודש" : "חלוקה לפי ימי השבוע"); route.keep = true; render(); }
+  else if (t.hasAttribute("data-newround")) { if (confirm("להתחיל סבב חדש? ההתקדמות בסבב הנוכחי תתאפס.")) { if (cntSince(S.round) === TOTAL) S.rounds++; S.round = Date.now(); save(); toast("התחלתם סבב חדש – בהצלחה!"); route.keep = true; render(); } }
+  else if (t.hasAttribute("data-remind")) remind();
+  else if (t.hasAttribute("data-share")) shareApp(D.share);
+  else if (t.hasAttribute("data-installhelp")) openSheet(installHelpHTML());
+  else if (t.hasAttribute("data-hint")) { S.hintBm = true; save(); route.keep = true; render(); }
+  else if (t.hasAttribute("data-bmclear")) { S.bm = null; save(); toast("הסימניה הוסרה"); route.keep = true; render(); }
+  else if (t.hasAttribute("data-retry")) { txFail = false; render(); }
+  else if (t.hasAttribute("data-retryst")) { delete stFail[tgt(route.k).c]; route.keep = true; render(); }
+  else if (D.bk) backup(D.bk);
+  else if (D.go) go({ v: D.go });
+  else if (D.gop) go({ v: "p", p: D.gop });
+  else if (t.hasAttribute("data-undo")) { if (lastBm) { S.bm = lastBm; lastBm = null; save(); $("#toast").classList.remove("show"); route.resume = null; route.keep = true; render(); } }
+  else if (D.toggle != null) toggleK(D.toggle, D.p || (route.v === "read" ? route.p : null));
+  else if (D.read != null) {
+    const r = { v: "read", k: D.read, p: D.p && portion(D.p) ? D.p : null, scrollV: D.v != null ? +D.v : null };
+    if (t.hasAttribute("data-resume") && S.bm) { lastBm = S.bm; r.resume = S.bm; S.bm = null; save(); toast("הסימניה הוסרה - ממשיכים הלאה", "ביטול"); }
+    go(r);
+  }
+  else if (D.bm != null) { const v = +D.bm; if (bmAt(route.k, v)) { S.bm = null; toast("הסימניה הוסרה"); } else { S.bm = { k: route.k, v, p: route.p || null }; route.resume = null; toast(`🔖 סומן: עד כאן אמרתי, לפני פסוק ${gem(v + 1)}`); S.hintBm = true; } save(); route.keep = true; render(); }
+  else if (t.hasAttribute("data-nextk") || t.hasAttribute("data-prevk")) { const nb = neighbors(), k = t.hasAttribute("data-nextk") ? nb.next : nb.prev; if (k) go({ v: "read", k, p: route.p }, true); }
+});
+document.addEventListener("keydown", e => {
+  if (e.key === "Escape") closeSheet();
+  if ((e.key === "Enter" || e.key === " ") && e.target.getAttribute && e.target.getAttribute("role") === "button") { e.preventDefault(); e.target.click(); }
+});
+/* ---------- גיבוי ושחזור ---------- */
+const bkData = () => ({ app: "tehillim", v: 1, done: S.done, bm: S.bm, round: S.round, rounds: S.rounds });
+const toCode = o => { const b = new TextEncoder().encode(JSON.stringify(o)); let s = ""; for (let i = 0; i < b.length; i += 8192) s += String.fromCharCode.apply(null, b.subarray(i, i + 8192)); return btoa(s); };
+const fromCode = c => JSON.parse(new TextDecoder().decode(Uint8Array.from(atob(c), ch => ch.charCodeAt(0))));
+function applyBackup(o) {
+  if (!o || o.app !== "tehillim" || !o.done || typeof o.done !== "object") throw 0;
+  for (const k of Object.keys(o.done)) if (UNITS[k] && Number.isFinite(o.done[k])) S.done[k] = Math.max(S.done[k] || 0, o.done[k]);
+  if (o.bm && validK(o.bm.k) && Number.isInteger(o.bm.v)) S.bm = { k: o.bm.k, v: o.bm.v, p: portion(o.bm.p) ? o.bm.p : null };
+  if (Number.isFinite(o.round)) S.round = Math.min(S.round, o.round);
+  if (Number.isInteger(o.rounds)) S.rounds = Math.max(S.rounds, o.rounds);
+  save(); toast("הגיבוי שוחזר ✓"); route.keep = true; render();
+}
+function backup(kind) {
+  if (kind === "copy") {
+    const c = toCode(bkData());
+    (navigator.clipboard ? navigator.clipboard.writeText(c).then(() => toast("הקוד הועתק - שמור אותו במקום בטוח")) : Promise.reject()).catch(() => prompt("העתק את הקוד ושמור אותו:", c));
+  } else if (kind === "file") {
+    const json = JSON.stringify(bkData()), d = today(), name = `tehillim-backup-${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}.json`;
+    const f = typeof File === "function" ? new File([json], name, { type: "application/json" }) : null;
+    if (f && navigator.canShare && navigator.canShare({ files: [f] })) { navigator.share({ files: [f] }).catch(() => {}); return; }
+    const url = URL.createObjectURL(new Blob([json], { type: "application/json" })), a = document.createElement("a"); a.href = url; a.download = name; document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 4000);
+  } else if (kind === "restore") {
+    const c = prompt("הדבק כאן את קוד הגיבוי:"); if (!c) return;
+    try { applyBackup(fromCode(c.trim())); } catch (e) { toast("הקוד לא תקין"); }
+  } else if (kind === "load") $("#bkf").click();
+}
+document.addEventListener("change", e => {
+  if (e.target.id === "bkf" && e.target.files[0]) { const r = new FileReader(); r.onload = () => { try { applyBackup(JSON.parse(r.result)); } catch (x) { toast("הקובץ לא תקין"); } }; r.readAsText(e.target.files[0]); e.target.value = ""; }
+  if (e.target.id === "remT") { S.remT = e.target.value; save(); }
+  if (e.target.id === "remShab") { S.remShab = e.target.checked; save(); }
+});
+let shownPid = todayPid();
+function checkDayRoll() { const p = todayPid(); if (p === shownPid) return; shownPid = p; if (route.v !== "read") { route.keep = true; render(); } }
+document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible") checkDayRoll(); });
+window.addEventListener("pageshow", checkDayRoll); window.addEventListener("focus", checkDayRoll);
+setInterval(checkDayRoll, 30000);
+fromHash();
+if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(err => console.error("SW registration failed:", err));
+</script>
+</body>
+</html>

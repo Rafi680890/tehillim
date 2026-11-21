@@ -1,4 +1,4 @@
-const CACHE = "tehillim-v8";
+const CACHE = "tehillim-v9";
 const EXT = "tehillim-ext";            // פירוש שטיינזלץ מספריא - נשמר גם בין גרסאות
 const CORE = ["./", "index.html", "meta.js", "text.json", "font.woff2?v=2", "font-ui.woff2", "logo.png", "manifest.webmanifest", "icon-v2-192.png", "icon-v2-512.png", "icon-v2-180.png"];
 const MAL = Array.from({ length: 150 }, (_, i) => "mal/" + (i + 1) + ".json");

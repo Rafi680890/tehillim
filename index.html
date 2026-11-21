@@ -536,7 +536,7 @@ const installHelpHTML = () => `<button class="x" data-close aria-label="סגור
 <ol class="help-steps"><li>בהודעה לחצו על <b>״פרטים נוספים״</b> ואז על <b>״התקן בכל זאת״</b>.</li>
 <li>אם אין כפתור כזה: ב-Chrome פתחו את התפריט ⋮ ובחרו <b>״הוסף למסך הבית״</b>, ואז <b>״צור קיצור דרך״</b>.</li>
 <li>או פשוט המשיכו להשתמש באתר דרך הדפדפן, בלי להתקין.</li></ol>`;
-const APP_VERSION = "2026.11.22 (v9)";
+const APP_VERSION = "2026.11.22 (v10)";
 async function hardRefresh() {
   if (!navigator.onLine) { toast("צריך חיבור לאינטרנט כדי לרענן"); return; }
   toast("מרענן לגרסה החדשה…");
@@ -580,10 +580,10 @@ function homeView() {
   ${bm}${portionCard(P, true)}
   <div class="card prog" data-go="progress" role="button" tabindex="0" style="cursor:pointer"><div class="ring" style="--p:${rp}"><i>${rp}%</i></div><div style="flex:1"><b style="font-size:18px">הסבב שלי בספר תהילים</b>${trophy()}<div style="color:var(--mute);margin:2px 0 8px">${cntSince(S.round)} מתוך ${TOTAL} פרקים בסבב ${gem(S.rounds + 1)}</div><div class="bar"><i style="width:${rp}%"></i></div></div></div>
   <div class="card"><h3 class="sh">📖 בחירת פרקים</h3><div class="choose">
-   <button data-go="chapters"><i>🔢</i><b>לפי פרקים</b><span>כל 150 הפרקים</span></button>
-   <button data-go="books"><i>📚</i><b>לפי ספרים</b><span>חמשת ספרי התהילים</span></button>
    <button data-go="days"><i>📅</i><b>לפי ימי החודש</b><span>30 ימים בחודש</span></button>
    <button data-go="weeks"><i>🗓️</i><b>לפי ימי השבוע</b><span>שבעה ימים</span></button>
+   <button data-go="chapters"><i>🔢</i><b>לפי פרקים</b><span>כל 150 הפרקים</span></button>
+   <button data-go="books"><i>📚</i><b>לפי ספרים</b><span>חמשת ספרי התהילים</span></button>
    <button class="wide" data-go="needs"><i>🙏</i><b>חיפוש לפי בקשה</b><span>רפואה, לידה, פרנסה, דרך, שלום בית ועוד</span></button></div></div>
   ${reminderCard()}${shareCard()}${footer(true)}${tabs()}`;
 }

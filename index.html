@@ -521,7 +521,7 @@ const installHelpHTML = () => `<button class="x" data-close aria-label="סגור
 <ol class="help-steps"><li>בהודעה לחצו על <b>״פרטים נוספים״</b> ואז על <b>״התקן בכל זאת״</b>.</li>
 <li>אם אין כפתור כזה: ב-Chrome פתחו את התפריט ⋮ ובחרו <b>״הוסף למסך הבית״</b>, ואז <b>״צור קיצור דרך״</b>.</li>
 <li>או פשוט המשיכו להשתמש באתר דרך הדפדפן, בלי להתקין.</li></ol>`;
-const APP_VERSION = "2026.11.21 (v2)";
+const APP_VERSION = "2026.11.21 (v3)";
 async function hardRefresh() {
   if (!navigator.onLine) { toast("צריך חיבור לאינטרנט כדי לרענן"); return; }
   toast("מרענן לגרסה החדשה…");
@@ -561,7 +561,7 @@ function homeView() {
   const rp = roundPct();
   return `<div class="hero"><div class="htop"><div class="logo"><img src="logo.png" alt="קהילת אבני החושן"></div><div class="hded"><div><small>לעילוי נשמת</small><b>ר׳ אברהם בן ברכה</b></div><i></i><div><small>ולעילוי נשמת</small><b>חנה בת חג׳ילה</b></div><i></i><div><small>ולעילוי נשמת</small><b>שלום שלומי בן חנה</b></div></div></div><h1>ספר <b>תהילים</b></h1><p>למה אומרים כל פרק · סיכום המלבי״ם · פירוש שטיינזלץ</p><div class="orn">✦</div></div>
   <div class="card datecard"><div class="he">${hebFmt(d)}</div><div class="gr">${wdFmt.format(d)} · ${pad(d.getDate())}.${pad(d.getMonth() + 1)}.${d.getFullYear()}</div>${todayShifted ? `<div class="gr" style="margin-top:6px;font-size:14px">🌙 היום העברי החל בשקיעה</div>` : ""}
-  <div class="swrow" style="margin-top:10px">חלוקה יומית:</div><div class="modes" style="margin-top:4px"><button class="sg ${S.mode === "m" ? "on" : ""}" data-mode="m">📅 לפי ימי החודש</button><button class="sg ${S.mode === "w" ? "on" : ""}" data-mode="w">🗓️ לפי ימי השבוע</button></div></div>
+  <div class="swrow"><span>היום מתחלף:</span><button class="sg ${S.sunset ? "on" : ""}" data-sunset="1">🌙 בשקיעה</button><button class="sg ${!S.sunset ? "on" : ""}" data-sunset="0">🕛 בחצות</button></div><div class="swrow" style="margin-top:10px">חלוקה יומית:</div><div class="modes" style="margin-top:4px"><button class="sg ${S.mode === "m" ? "on" : ""}" data-mode="m">📅 לפי ימי החודש</button><button class="sg ${S.mode === "w" ? "on" : ""}" data-mode="w">🗓️ לפי ימי השבוע</button></div></div>
   ${bm}${portionCard(P, true)}
   <div class="card prog" data-go="progress" role="button" tabindex="0" style="cursor:pointer"><div class="ring" style="--p:${rp}"><i>${rp}%</i></div><div style="flex:1"><b style="font-size:18px">הסבב שלי בספר תהילים</b><div style="color:var(--mute);margin:2px 0 8px">${cntSince(S.round)} מתוך ${TOTAL} פרקים${S.rounds ? ` · ${S.rounds} סבבים הושלמו` : ""}</div><div class="bar"><i style="width:${rp}%"></i></div></div></div>
   <div class="card"><h3 class="sh">📖 בחירת פרקים</h3><div class="choose">
@@ -751,7 +751,7 @@ function toggleK(k, p) {
 /* ---------- אירועים ---------- */
 document.addEventListener("click", e => {
   if (e.target.id === "ov") return closeSheet();
-  const t = e.target.closest("[data-go],[data-gop],[data-read],[data-toggle],[data-mode],[data-bm],[data-fs],[data-set],[data-sw],[data-th],[data-close],[data-nextk],[data-prevk],[data-hint],[data-undo],[data-share],[data-installhelp],[data-bmclear],[data-retry],[data-retryst],[data-bk],[data-navback],[data-navfwd],[data-refresh],[data-prayer],[data-sum],[data-src],[data-malsrc],[data-comm],[data-pv],[data-newround],[data-remind]");
+  const t = e.target.closest("[data-go],[data-gop],[data-read],[data-toggle],[data-mode],[data-bm],[data-fs],[data-set],[data-sw],[data-th],[data-close],[data-nextk],[data-prevk],[data-hint],[data-undo],[data-share],[data-installhelp],[data-bmclear],[data-retry],[data-retryst],[data-bk],[data-navback],[data-navfwd],[data-refresh],[data-prayer],[data-sum],[data-src],[data-malsrc],[data-comm],[data-sunset],[data-pv],[data-newround],[data-remind]");
   if (!t) return;
   const D = t.dataset;
   if (t.hasAttribute("data-close")) closeSheet();
@@ -767,6 +767,7 @@ document.addEventListener("click", e => {
   else if (D.src) openSheet(srcHTML(+D.src));
   else if (D.malsrc) { const el = $("#malsrc"); el.hidden = !el.hidden; el.innerHTML = malOpen(+D.malsrc); }
   else if (D.comm != null) { S.comm = D.comm; route.keep = true; render(); }
+  else if (D.sunset != null) { S.sunset = D.sunset === "1"; save(); checkDayRoll(); toast(S.sunset ? "היום מתחלף בשקיעה" : "היום מתחלף בחצות"); route.keep = true; render(); }
   else if (D.pv) { S.pv = D.pv; save(); route.keep = true; render(); }
   else if (D.mode) { S.mode = D.mode; save(); toast(S.mode === "m" ? "חלוקה לפי ימי החודש" : "חלוקה לפי ימי השבוע"); route.keep = true; render(); }
   else if (t.hasAttribute("data-newround")) { if (confirm("להתחיל סבב חדש? ההתקדמות בסבב הנוכחי תתאפס.")) { if (cntSince(S.round) === TOTAL) S.rounds++; S.round = Date.now(); save(); toast("התחלתם סבב חדש – בהצלחה!"); route.keep = true; render(); } }

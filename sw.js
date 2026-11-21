@@ -1,6 +1,6 @@
-const CACHE = "tehillim-v11";
+const CACHE = "tehillim-v12";
 const EXT = "tehillim-ext";            // פירוש שטיינזלץ מספריא - נשמר גם בין גרסאות
-const CORE = ["./", "index.html", "meta.js", "text.json", "font.woff2?v=2", "font-ui.woff2", "logo.png", "manifest.webmanifest", "icon-v2-192.png", "icon-v2-512.png", "icon-v2-180.png"];
+const CORE = ["./", "index.html", "meta.js?v=12", "text.json", "font.woff2?v=2", "font-ui.woff2", "logo.png", "manifest.webmanifest", "icon-v2-192.png", "icon-v2-512.png", "icon-v2-180.png"];
 const MAL = Array.from({ length: 150 }, (_, i) => "mal/" + (i + 1) + ".json");
 self.addEventListener("install", e => {
   e.waitUntil(caches.open(CACHE).then(async c => { await c.addAll(CORE); await Promise.allSettled(MAL.map(u => c.add(u))); }).then(() => self.skipWaiting()));
@@ -16,7 +16,7 @@ self.addEventListener("fetch", e => {
   if (u.origin !== location.origin) return;
   const isPage = req.mode === "navigate" || /\/(index\.html|meta\.js|manifest\.webmanifest)?$/.test(u.pathname);
   if (isPage) {
-    e.respondWith(fetch(req).then(n => { const c = n.clone(); caches.open(CACHE).then(x => x.put(req, c)); return n; }).catch(() => caches.match(req).then(r => r || caches.match("index.html"))));
+    e.respondWith(fetch(req, { cache: "no-cache" }).then(n => { const c = n.clone(); caches.open(CACHE).then(x => x.put(req, c)); return n; }).catch(() => caches.match(req).then(r => r || caches.match("index.html"))));
     return;
   }
   e.respondWith(caches.match(req).then(r => r || fetch(req).then(n => { if (n.ok) { const c = n.clone(); caches.open(CACHE).then(x => x.put(req, c)); } return n; })));

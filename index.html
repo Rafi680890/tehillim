@@ -326,7 +326,7 @@ const WEEK = [[1, 29], [30, 50], [51, 72], [73, 89], [90, 106], [107, 119], [120
 const WD = ["ראשון", "שני", "שלישי", "רביעי", "חמישי", "שישי", "שבת קודש"];
 const CAT = T.cat;
 /* קישורי שמע: הרב מוטי פרנקו (Spotify) - "מספר פרק": "מזהה פרק". פרק בלי מזהה לא מציג כפתור שמע. */
-const SPOTIFY_EP = {};
+const SPOTIFY_EP = {"1": "4mbg774sBiXfdONLg7h0gc", "2": "1iSJd4dwoI9MiFxh4fJ0Je", "3": "7f9Ti4xlzgvAuHdrV8dcQM", "4": "3e8I8ylLrVdqIwXCZ06Cn1", "5": "2LGr3KkyF2OyGEpKr0OsUu", "6": "3zmkcunw8rzgi17P9u64CQ"};
 
 /* ---------- מצב ---------- */
 const KEY = "tehillim.v1";
@@ -341,7 +341,7 @@ try {
   if (!(Number.isFinite(S.fs) && S.fs >= 16 && S.fs <= 48)) S.fs = 28;
   if (!["light", "sepia", "dark", "auto"].includes(S.theme)) S.theme = "light";
   if (!["m", "w"].includes(S.mode)) S.mode = "m";
-  if (!["", "st", "ml"].includes(S.comm)) S.comm = "";
+  S.comm = "";   // מצב הפירוש לא נשמר - כל כניסה לפרק מתחילה ב"ללא"
   if (!["d", "w", "m", "r"].includes(S.pv)) S.pv = "d";
   if (!Number.isFinite(S.round)) S.round = Date.now();
   if (!Number.isInteger(S.rounds) || S.rounds < 0) S.rounds = 0;
@@ -444,6 +444,7 @@ try { if (/[?&]r=\d+/.test(location.search)) history.replaceState(history.state,
 if (history.state && Number.isInteger(history.state.i)) navIdx = navMax = history.state.i; else try { history.replaceState({ i: 0 }, ""); } catch (e) {}
 const urlOf = r => "#" + r.v + (r.k ? "/" + r.k : "") + (r.p ? "/" + r.p : "");
 function go(r, replace) {
+  if (r.v === "read" && route.v !== "read") S.comm = "";   // כניסה לפרק מבחוץ - בלי פירוש
   route = r;
   if (replace) history.replaceState({ i: navIdx }, "", urlOf(r)); else { navIdx++; navMax = navIdx; history.pushState({ i: navIdx }, "", urlOf(r)); }
   lastHash = location.hash; closeSheet(); render();
@@ -451,7 +452,7 @@ function go(r, replace) {
 function fromHash() {
   if (location.hash === lastHash) return; booted = true; lastHash = location.hash;
   const [v, a, b] = location.hash.slice(1).split("/");
-  if (v === "read" && validK(a)) route = { v, k: a, p: portion(b) ? b : null };
+  if (v === "read" && validK(a)) { if (route.v !== "read") S.comm = ""; route = { v, k: a, p: portion(b) ? b : null }; }
   else if (v === "p" && portion(a)) route = { v, p: a };
   else if (["chapters", "books", "days", "weeks", "needs", "progress"].includes(v)) route = { v };
   else route = { v: "home" };
@@ -520,7 +521,7 @@ const installHelpHTML = () => `<button class="x" data-close aria-label="סגור
 <ol class="help-steps"><li>בהודעה לחצו על <b>״פרטים נוספים״</b> ואז על <b>״התקן בכל זאת״</b>.</li>
 <li>אם אין כפתור כזה: ב-Chrome פתחו את התפריט ⋮ ובחרו <b>״הוסף למסך הבית״</b>, ואז <b>״צור קיצור דרך״</b>.</li>
 <li>או פשוט המשיכו להשתמש באתר דרך הדפדפן, בלי להתקין.</li></ol>`;
-const APP_VERSION = "2026.11.21 (v1)";
+const APP_VERSION = "2026.11.21 (v2)";
 async function hardRefresh() {
   if (!navigator.onLine) { toast("צריך חיבור לאינטרנט כדי לרענן"); return; }
   toast("מרענן לגרסה החדשה…");
@@ -765,7 +766,7 @@ document.addEventListener("click", e => {
   else if (D.sum) openSheet(sumHTML(+D.sum));
   else if (D.src) openSheet(srcHTML(+D.src));
   else if (D.malsrc) { const el = $("#malsrc"); el.hidden = !el.hidden; el.innerHTML = malOpen(+D.malsrc); }
-  else if (D.comm != null) { S.comm = D.comm; save(); route.keep = true; render(); }
+  else if (D.comm != null) { S.comm = D.comm; route.keep = true; render(); }
   else if (D.pv) { S.pv = D.pv; save(); route.keep = true; render(); }
   else if (D.mode) { S.mode = D.mode; save(); toast(S.mode === "m" ? "חלוקה לפי ימי החודש" : "חלוקה לפי ימי השבוע"); route.keep = true; render(); }
   else if (t.hasAttribute("data-newround")) { if (confirm("להתחיל סבב חדש? ההתקדמות בסבב הנוכחי תתאפס.")) { if (cntSince(S.round) === TOTAL) S.rounds++; S.round = Date.now(); save(); toast("התחלתם סבב חדש – בהצלחה!"); route.keep = true; render(); } }

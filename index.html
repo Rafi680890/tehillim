@@ -257,14 +257,28 @@ select{width:100%;height:46px;border:1px solid var(--line);background:var(--card
 .lrow .ck{flex:none;width:40px;height:40px;border-radius:50%;border:2px solid var(--line);background:var(--bg);color:var(--mute);font-weight:800;font-size:18px;display:grid;place-items:center}
 .lrow .ck.on{background:var(--ok);border-color:var(--ok);color:#fff}
 .lrow .go2{flex:none;border:0;background:var(--accent);color:var(--card);border-radius:12px;padding:9px 13px;font-weight:800}
-.seg-box{background:linear-gradient(135deg,var(--card),var(--mark));border:2px solid var(--gold);border-radius:16px;padding:12px 14px;margin:12px 0 8px}
-.seg-box small{display:block;color:var(--c1);font-weight:800;font-size:13px;letter-spacing:.3px}
-.seg-box b{display:block;font-size:18px;line-height:1.45;margin-top:2px}
-.seg-box .no{color:var(--mute);font-weight:600;font-size:15px}
-.seg-box button{margin-top:8px;border:1px solid var(--line);background:var(--card);border-radius:999px;padding:5px 12px;font-size:13px;font-weight:700;color:var(--accent)}
+.mal-box{background:linear-gradient(135deg,var(--card),var(--mark));border:2px solid var(--gold);border-radius:16px;padding:12px 14px;margin:12px 0 8px}
+.mal-sum{font-size:17px;line-height:1.7;font-weight:600;color:var(--ink)}
+.mal-tgl{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;margin-top:10px;border:2px solid var(--c3);background:var(--card);color:var(--c3);border-radius:999px;padding:9px 14px;font-weight:800;font-size:15px}
+.mal-tgl.on{background:var(--c3);color:#fff}
+.mal-tgl .chev{font-size:13px}
+.mal-full{margin-top:10px;max-height:60vh;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:6px 12px 10px;font-size:17px;line-height:1.8}
+.mal-full p{margin:0 0 6px}
+.mal-full .mv{padding:8px 0;border-bottom:1px dashed var(--line)}.mal-full .mv:last-of-type{border:0}
+.mal-full .mvn{display:inline-block;background:var(--c3);color:#fff;border-radius:8px;padding:0 8px;font-size:13px;margin-bottom:4px}
+.segline{font-family:"UIFont",system-ui,sans-serif;text-align:right;font-weight:800;font-size:18px;line-height:1.5;color:var(--ink);margin:12px 2px 4px}
+.cmsel2{margin:12px 0 8px}
+.cmlbl{font-size:13px;font-weight:800;color:var(--mute);margin:0 4px 6px}
+.cmseg{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.cmb{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-height:62px;border:2px solid var(--line);background:var(--card);border-radius:16px;font-weight:800;font-size:16px;color:var(--ink);box-shadow:0 2px 8px rgba(20,48,90,.08);transition:transform .12s,box-shadow .12s}
+.cmb i{font-style:normal;font-size:22px;line-height:1}
+.cmb:active{transform:scale(.97)}
+.cmb.s{border-color:rgba(27,127,140,.4)}.cmb.m{border-color:rgba(106,63,160,.4)}
+.cmb.on span:before{content:"✓ "}
+.cmb.n.on{background:linear-gradient(135deg,var(--hero1),var(--hero2));border-color:var(--hero1);color:#fff;box-shadow:0 6px 16px rgba(16,41,80,.35)}
+.cmb.s.on{background:linear-gradient(135deg,var(--c2),#2aa8a0);border-color:var(--c2);color:#fff;box-shadow:0 6px 16px rgba(27,127,140,.4)}
+.cmb.m.on{background:linear-gradient(135deg,var(--c3),#8a5bd0);border-color:var(--c3);color:#fff;box-shadow:0 6px 16px rgba(106,63,160,.4)}
 .tools{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:6px 0}
-.tools .sumbtn{background:linear-gradient(135deg,var(--c3),var(--c2));color:#fff;border:0;border-radius:999px;padding:9px 16px;font-weight:800;font-size:15px;box-shadow:0 4px 12px rgba(106,63,160,.3)}
-.cmsel{display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:14px;color:var(--mute);font-weight:700;margin:6px 0}
 .cm{display:block;font-family:"UIFont",system-ui,sans-serif;font-size:max(15px,calc(var(--fs) * .62));line-height:1.75;color:var(--ink);background:var(--bg);border-inline-start:4px solid var(--c2);border-radius:10px;padding:8px 12px;margin:4px 0 12px}
 .cm.ml{border-color:var(--c3)}
 .cm p{margin:0 0 6px}.cm p:last-child{margin:0}
@@ -276,8 +290,6 @@ select{width:100%;height:46px;border:1px solid var(--line);background:var(--card
 .prayer h4{font-family:"UIFont",sans-serif;font-size:15px;color:var(--c1);margin:14px 0 2px}
 .sumtxt{font-size:19px;line-height:1.8;background:var(--mark);border-radius:14px;padding:12px 14px}
 .srcnote{font-size:12px;color:var(--mute);margin-top:8px;line-height:1.5}
-.origtxt{font-size:17px;line-height:1.8;white-space:pre-line;background:var(--bg);border-radius:12px;padding:10px 12px;margin-top:10px}
-.malsrc{font-size:17px;line-height:1.85;background:var(--bg);border-radius:12px;padding:10px 12px;margin-top:10px}
 .remrow{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
 .remrow input[type=time]{height:46px;border:1px solid var(--line);background:var(--card);border-radius:10px;padding:0 10px;font-size:18px;color:var(--ink)}
 .remrow label{display:flex;align-items:center;gap:6px;font-size:14px;color:var(--mute);font-weight:700}
@@ -482,7 +494,7 @@ const MAL = {}, malFail = {}, ST = {}, stFail = {}, stLoad = {};
 function loadMal(c) {
   if (MAL[c] || MAL[c] === null) return; MAL[c] = null;
   fetch("mal/" + c + ".json").then(r => { if (!r.ok) throw 0; return r.json(); }).then(j => { MAL[c] = j; })
-    .catch(() => { delete MAL[c]; malFail[c] = 1; }).finally(() => { if (route.v === "read" && tgt(route.k).c === c) { route.keep = true; render(); } else if ($("#malsrc")) $("#malsrc").innerHTML = malOpen(c); });
+    .catch(() => { delete MAL[c]; malFail[c] = 1; }).finally(() => { if (route.v === "read" && tgt(route.k).c === c) { route.keep = true; render(); } });
 }
 /* פירוש שטיינזלץ נטען ישירות מספריא (זכויות: מרכז שטיינזלץ), ונשמר במכשיר לשימוש בלי חיבור */
 function loadSt(c) {
@@ -493,7 +505,12 @@ function loadSt(c) {
 }
 window.addEventListener("online", () => { txFail = false; for (const k in stFail) delete stFail[k]; for (const k in malFail) delete malFail[k]; if (route.v === "read") { route.keep = true; render(); } });
 const clean = s => String(s || "").replace(/<(?!\/?b>)[^>]*>/g, "").replace(/&nbsp;/g, " ").replace(/&thinsp;/g, "");
-const malOpen = c => MAL[c] ? (MAL[c].slice(0, 2).flat().map(x => `<p>${clean(x)}</p>`).join("") || "<p>אין פתיחה למלבי״ם בפרק זה.</p>") : (malFail[c] ? "לא הצלחנו לטעון. נדרש חיבור לאינטרנט." : "טוען…");
+function malFullHTML(c, t) {                    // פירוש המלבי"ם המלא לפרק (או לחצי פרק קי"ט), בקטע נגלל
+  if (!MAL[c]) return `<div class="cmn">${malFail[c] ? "לא הצלחנו לטעון את פירוש המלבי״ם. נדרש חיבור לאינטרנט." : "טוען את פירוש המלבי״ם…"}</div>`;
+  let h = "";
+  for (let i = t.a; i <= t.z; i++) { const cs = MAL[c][i]; if (cs && cs.length) h += `<div class="mv"><b class="mvn">פסוק ${gem(i + 1)}</b>${cs.map(x => `<p>${clean(x)}</p>`).join("")}</div>`; }
+  return (h || '<div class="cmn">אין פירוש למלבי״ם בפרק זה.</div>') + '<div class="srcnote">פירוש המלבי״ם: נחלת הכלל, באמצעות ספריא.</div>';
+}
 
 /* ---------- קישורים ---------- */
 /* שמע: שיעורי הרב מוטי פרנקו בישיבת הגולן - מזמור -> כתובת השיעור (נבדק שכל דף כולל נגן ושהכותרת תואמת) */
@@ -536,7 +553,7 @@ const installHelpHTML = () => `<button class="x" data-close aria-label="סגור
 <ol class="help-steps"><li>בהודעה לחצו על <b>״פרטים נוספים״</b> ואז על <b>״התקן בכל זאת״</b>.</li>
 <li>אם אין כפתור כזה: ב-Chrome פתחו את התפריט ⋮ ובחרו <b>״הוסף למסך הבית״</b>, ואז <b>״צור קיצור דרך״</b>.</li>
 <li>או פשוט המשיכו להשתמש באתר דרך הדפדפן, בלי להתקין.</li></ol>`;
-const APP_VERSION = "2026.11.22 (v12)";
+const APP_VERSION = "2026.11.22 (v13)";
 async function hardRefresh() {
   if (!navigator.onLine) { toast("צריך חיבור לאינטרנט כדי לרענן"); return; }
   toast("מרענן לגרסה החדשה…");
@@ -547,7 +564,7 @@ async function hardRefresh() {
   location.replace(location.pathname + "?r=" + Date.now() + location.hash);
 }
 function footer(src) {
-  return `<footer class="ft"><div class="cp">© רפאל בטיט · כל הזכויות שמורות על עיצוב ופיתוח האפליקציה</div><div class="cp" style="margin-top:4px">אפליקציה חינמית, ללא פרסומות</div><div class="ver">גרסה ${APP_VERSION}</div><button class="refbtn" data-refresh>🔄 ריענון לגירסה חדשה</button><div class="vernote">הריענון מוריד את הגרסה העדכנית. ההתקדמות והסימניות שלך נשמרות.</div>${src ? `<div class="src">נוסח המקרא: מקרא על פי המסורה (MAM), ברישיון CC-BY-SA, באמצעות ספריא. פירוש המלבי״ם: נחלת הכלל, באמצעות ספריא. פירוש הרב עדין שטיינזלץ (תנ״ך קורן שטיינזלץ המבואר): כל הזכויות למרכז שטיינזלץ, נטען מאתר ספריא. ״למה הפרק״: על פי ספר שמוש תהלים (ויקיטקסט). תמצית הפרק היא ניסוח מקוצר על פי דברי המלבי״ם, ואינה ציטוט. שמע: שיעורי הרב מוטי פרנקו, ישיבת הגולן (ygolan.org) ו-Spotify.</div>` : ""}</footer>`;
+  return `<footer class="ft"><div class="cp">© רפאל בטיט · כל הזכויות שמורות על עיצוב ופיתוח האפליקציה</div><div class="cp" style="margin-top:4px">אפליקציה חינמית, ללא פרסומות</div><div class="ver">גרסה ${APP_VERSION}</div><button class="refbtn" data-refresh>🔄 ריענון לגירסה חדשה</button><div class="vernote">הריענון מוריד את הגרסה העדכנית. ההתקדמות והסימניות שלך נשמרות.</div>${src ? `<div class="src">נוסח המקרא: מקרא על פי המסורה (MAM), ברישיון CC-BY-SA, באמצעות ספריא. פירוש המלבי״ם: נחלת הכלל, באמצעות ספריא. פירוש הרב עדין שטיינזלץ (תנ״ך קורן שטיינזלץ המבואר): כל הזכויות למרכז שטיינזלץ, נטען מאתר ספריא. ״למה הפרק״: על פי ספר שמוש תהלים (ויקיטקסט), ובפרקים שחסרים בנוסח זה – על פי תרגום ג. זליג (1788). תמצית הפרק היא ניסוח מקוצר על פי דברי המלבי״ם, ואינה ציטוט. שמע: שיעורי הרב מוטי פרנקו, ישיבת הגולן (ygolan.org) ו-Spotify.</div>` : ""}</footer>`;
 }
 function tabs() {
   const on = ["progress"].includes(route.v) ? "p" : "d", pct = route.v === "progress" ? roundPct() : pctP(portion(todayPid()));
@@ -662,9 +679,12 @@ function readView() {
   const head = `<header class="rh">${`<button class="home" data-go="home">${I.home}<span>דף הבית</span></button>`}${navBack()}${navFwd()}<span class="spacer"></span><button class="gear" data-set aria-label="הגדרות תצוגה">Aa</button><div class="rt2">תהילים ${kName(k).replace("פרק ", "פרק ")}${P ? `<div style="font-size:13px;font-weight:600;opacity:.85">${P.title}</div>` : ""}</div></header>`;
   if (!TX) return head + (txFail ? `<div class="card" style="text-align:center;margin-top:24px"><div style="font-size:18px;font-weight:700">לא הצלחנו לטעון את הטקסט</div><div style="color:var(--mute);margin:6px 0 12px">בדוק את החיבור לאינטרנט ונסה שוב.</div><button class="btn read" style="margin:auto" data-retry>נסה שוב</button></div>` : `<div class="cmn" style="margin-top:40px;font-size:18px">טוען את הפרק…</div>`) + footer(true);
   const sg = segOf(c);
-  const segBox = sg ? `<div class="seg-box"><small>🔹 למה אומרים את הפרק</small><b>${esc(sg)}</b><button data-src="${c}">המקור בספר שמוש תהלים</button></div>` : "";
-  const tools = `<div class="tools"><button class="sumbtn" data-sum="${c}">📝 סיכום הפרק · המלבי״ם</button>${audioLinks(k)}</div>
-   <div class="cmsel"><span>פירוש לכל פסוק:</span><div class="seg"><button class="${S.comm === "" ? "on" : ""}" data-comm="">ללא</button><button class="${S.comm === "st" ? "on" : ""}" data-comm="st">שטיינזלץ</button><button class="${S.comm === "ml" ? "on" : ""}" data-comm="ml">מלבי״ם</button></div></div>`;
+  const mo = !!route.mo, malBox = `<div class="mal-box"><div class="mal-sum">${esc(T.sum[c] || "")}</div><button class="mal-tgl ${mo ? "on" : ""}" data-malfull aria-expanded="${mo}">📜 פירוש המלבי״ם המלא <span class="chev">${mo ? "▴" : "▾"}</span></button>${mo ? `<div class="mal-full">${malFullHTML(c, t)}</div>` : ""}</div>`;
+  const segLine = sg ? `<div class="segline">${esc(sg)}</div>` : "";
+  const al = audioLinks(k), tools = (al ? `<div class="tools">${al}</div>` : "") + `<div class="cmsel2"><div class="cmlbl">פירוש לכל פסוק</div><div class="cmseg">
+   <button class="cmb n ${S.comm === "" ? "on" : ""}" data-comm="" aria-pressed="${S.comm === ""}"><i>🚫</i><span>ללא</span></button>
+   <button class="cmb s ${S.comm === "st" ? "on" : ""}" data-comm="st" aria-pressed="${S.comm === "st"}"><i>📗</i><span>שטיינזלץ</span></button>
+   <button class="cmb m ${S.comm === "ml" ? "on" : ""}" data-comm="ml" aria-pressed="${S.comm === "ml"}"><i>📘</i><span>מלבי״ם</span></button></div></div>`;
   const first = P && P.ks[0] === k ? `<div style="text-align:center;margin:4px 0"><button class="pbtn" data-prayer="before">🙏 תפילה לפני האמירה</button></div>` : "";
   const hint = !S.hintBm && !S.bm ? `<div class="hint"><div>💡 <b>עצרתם באמצע?</b> לחצו על מספר <b>הפסוק הבא</b> שעוד לא אמרתם. הקו יסמן עד היכן הגעתם, ובפעם הבאה תמשיכו בדיוק משם.</div><button data-hint>הבנתי</button></div>` : "";
   let cmNote = "";
@@ -682,7 +702,7 @@ function readView() {
   }
   const done = isDoneK(k, since), nb = neighbors();
   const endCard = (!P || nb.last) ? `<div class="card donecard"><b>${P ? "סיימתם את " + P.title + "! חזק וברוך" : "סיימתם את הפרק"}</b>${!done ? `<button class="btn chk" data-toggle="${k}" ${P ? `data-p="${P.id}"` : ""}>${I.check} סמן כנאמר</button> ` : ""}<button class="pbtn" data-prayer="after" ${P ? `data-pp="${P.id}"` : ""}>🙏 תפילה לאחר האמירה</button></div>` : "";
-  return head + segBox + tools + first + hint + cmNote + `<div class="text" style="--fs:${S.fs}px">${tx}</div>` + endCard + chapNav(nb) + footer(true) +
+  return head + malBox + tools + first + hint + cmNote + segLine + `<div class="text" style="--fs:${S.fs}px">${tx}</div>` + endCard + chapNav(nb) + footer(true) +
     `<div class="rbar"><button data-prevk ${nb.prev ? "" : "disabled"}>› הקודם<small>${nb.prev ? kShort(nb.prev) : ""}</small></button><button class="learn ${done ? "on" : ""}" data-toggle="${k}" ${P ? `data-p="${P.id}"` : ""}>${done ? "✓ נאמר" : "סמן כנאמר"}</button><button class="next" data-nextk ${nb.next ? "" : "disabled"}>הבא ‹<small>${nb.next ? kShort(nb.next) : ""}</small></button></div>`;
 }
 let lastBm = null;
@@ -720,16 +740,6 @@ function openSheet(html) {
   const ov = $("#ov"); if (!ov.classList.contains("show")) prevFocus = document.activeElement;
   $("#sheet").innerHTML = html; ov.classList.add("show"); document.body.style.overflow = "hidden"; $("#app").setAttribute("aria-hidden", "true"); $("#app").setAttribute("inert", "");
   ($("#sheet .x") || $("#sheet")).focus(); $("#sheet").scrollTop = 0;
-}
-function sumHTML(c) {
-  loadMal(c);
-  return `<button class="x" data-close aria-label="סגור">✕</button><h3 class="sh" style="margin-top:4px">📝 סיכום פרק ${gem(c)}</h3><div class="sumtxt">${esc(T.sum[c])}</div>
-  <div class="srcnote">התמצית נכתבה על פי דברי המלבי״ם בפתיחתו לפרק, בניסוח מקוצר ובלשון ימינו.</div>
-  <div class="nav" style="justify-content:flex-start"><button data-malsrc="${c}">📜 המלבי״ם במקור</button></div><div class="malsrc" id="malsrc" hidden></div>`;
-}
-function srcHTML(c) {
-  return `<button class="x" data-close aria-label="סגור">✕</button><h3 class="sh" style="margin-top:4px">🔹 למה אומרים את פרק ${gem(c)}</h3><div class="sumtxt">${esc(segOf(c))}</div>
-  ${T.src[c] ? `<div class="lbl">לשון ספר ״שמוש תהלים״</div><div class="origtxt">${esc(T.src[c])}</div><div class="srcnote">מתוך ספר ״שמוש תהלים״ (מיוחס לרב האי גאון), על פי ויקיטקסט. הסגולות מובאות כפי שהן במקור, ואין בהן כדי להורות הלכה למעשה.</div>` : `<div class="srcnote" style="font-size:14px">פרק זה חסר בנוסח של ספר ״שמוש תהלים״ שבויקיטקסט. הסגולה מובאת על פי הנוסח המלא של הספר, כפי שתורגם ונדפס בידי ג. זליג (1788), בניסוח מקוצר. הסגולות מובאות כפי שהן במקור, ואין בהן כדי להורות הלכה למעשה.</div>`}`;
 }
 function settingsHTML() {
   const th = [["auto", "אוטומטי", "linear-gradient(90deg,#f4efe4 50%,#12161c 50%)"], ["light", "יום", "#f4efe4"], ["sepia", "קלף", "#efe2c3"], ["dark", "לילה", "#12161c"]];
@@ -777,7 +787,7 @@ function toggleK(k, p) {
 /* ---------- אירועים ---------- */
 document.addEventListener("click", e => {
   if (e.target.id === "ov") return closeSheet();
-  const t = e.target.closest("[data-go],[data-gop],[data-read],[data-toggle],[data-mode],[data-bm],[data-fs],[data-set],[data-sw],[data-th],[data-close],[data-nextk],[data-prevk],[data-gok],[data-hint],[data-undo],[data-share],[data-installhelp],[data-bmclear],[data-retry],[data-retryst],[data-bk],[data-navback],[data-navfwd],[data-refresh],[data-prayer],[data-sum],[data-src],[data-malsrc],[data-comm],[data-sunset],[data-pv],[data-newround],[data-remind]");
+  const t = e.target.closest("[data-go],[data-gop],[data-read],[data-toggle],[data-mode],[data-bm],[data-fs],[data-set],[data-sw],[data-th],[data-close],[data-nextk],[data-prevk],[data-gok],[data-hint],[data-undo],[data-share],[data-installhelp],[data-bmclear],[data-retry],[data-retryst],[data-bk],[data-navback],[data-navfwd],[data-refresh],[data-prayer],[data-malfull],[data-comm],[data-sunset],[data-pv],[data-newround],[data-remind]");
   if (!t) return;
   const D = t.dataset;
   if (t.hasAttribute("data-close")) closeSheet();
@@ -789,9 +799,7 @@ document.addEventListener("click", e => {
   else if (t.hasAttribute("data-navback")) { if (navIdx > 0) history.back(); }
   else if (t.hasAttribute("data-navfwd")) { if (navIdx < navMax) history.forward(); }
   else if (D.prayer) { const pp = D.pp ? portion(D.pp) : null, last = pp ? pp.ks[pp.ks.length - 1] : (route.v === "read" ? route.k : "150"); const b = D.pb != null ? +D.pb : Math.max(0, bookOf(tgt(last).c)); openSheet(prayerHTML(D.prayer, b)); }
-  else if (D.sum) openSheet(sumHTML(+D.sum));
-  else if (D.src) openSheet(srcHTML(+D.src));
-  else if (D.malsrc) { const el = $("#malsrc"); el.hidden = !el.hidden; el.innerHTML = malOpen(+D.malsrc); }
+  else if (t.hasAttribute("data-malfull")) { route.mo = !route.mo; route.keep = true; render(); }
   else if (D.comm != null) { S.comm = D.comm; route.keep = true; render(); }
   else if (D.sunset != null) { S.sunset = D.sunset === "1"; save(); checkDayRoll(); toast(S.sunset ? "היום מתחלף בשקיעה" : "היום מתחלף בחצות"); route.keep = true; render(); }
   else if (D.pv) { S.pv = D.pv; save(); route.keep = true; render(); }

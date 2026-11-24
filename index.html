@@ -766,7 +766,7 @@ const installHelpHTML = () => `<button class="x" data-close aria-label="סגור
 <ol class="help-steps"><li>בהודעה לחצו על <b>״פרטים נוספים״</b> ואז על <b>״התקן בכל זאת״</b>.</li>
 <li>אם אין כפתור כזה: ב-Chrome פתחו את התפריט ⋮ ובחרו <b>״הוסף למסך הבית״</b>, ואז <b>״צור קיצור דרך״</b>.</li>
 <li>או פשוט המשיכו להשתמש באתר דרך הדפדפן, בלי להתקין.</li></ol>`;
-const APP_VERSION = "2026.11.24 (v24)";
+const APP_VERSION = "2026.11.24 (v25)";
 async function hardRefresh() {
   if (!navigator.onLine) { toast("צריך חיבור לאינטרנט כדי לרענן"); return; }
   toast("מרענן לגרסה החדשה…");
@@ -840,7 +840,7 @@ function needsView() {
 }
 function portionView() {
   const P = portion(route.p), since = P.since();
-  const rows = P.ks.map(k => { const c = tgt(k).c, on = isDoneK(k, since), sg = route.p[0] === "c" ? (T.seg[c] || "") : (T.seg[c] || "");
+  const rows = P.ks.map(k => { const c = tgt(k).c, on = isDoneK(k, since), sg = T.seg[c] || "";
     return `<div class="lrow"><button class="ck ${on ? "on" : ""}" data-toggle="${k}" data-p="${P.id}" aria-label="${on ? "בטל סימון" : "סמן כנאמר"}">${on ? "✓" : ""}</button><div class="t" data-read="${k}" data-p="${P.id}" role="button" tabindex="0" style="cursor:pointer"><b>${kName(k)}</b><span>${sg ? "🔹 " + esc(sg) : ""}</span></div><button class="go2" data-read="${k}" data-p="${P.id}">לאמירה ‹</button></div>`; }).join("");
   const back = route.p[0] === "b" ? "books" : route.p[0] === "w" ? "weeks" : route.p[0] === "c" ? "needs" : "days";
   return `<header class="rh" style="margin-bottom:12px"><button class="home" data-go="${back}"><span>‹ חזרה</span></button><div class="rt">${P.title}</div></header>${portionCard(P, false)}${rows}${footer(false)}${tabs()}`;
@@ -889,7 +889,7 @@ const chapNav = nb => `<div class="chnav">${nb.prev ? `<button data-gok="${nb.pr
 function readView() {
   const k = route.k, t = tgt(k), c = t.c, P = portion(route.p), since = P ? P.since() : S.round;
   loadText(); loadMal(c); if (S.comm === "st") loadSt(c);
-  const head = `<header class="rh">${`<button class="home" data-go="home">${I.home}<span>דף הבית</span></button>`}${navBack()}${navFwd()}<span class="spacer"></span><button class="gear" data-set aria-label="הגדרות תצוגה">Aa</button><div class="rt2">תהילים ${kName(k).replace("פרק ", "פרק ")}${P ? `<div style="font-size:13px;font-weight:600;opacity:.85">${P.title}</div>` : ""}</div></header>`;
+  const head = `<header class="rh">${`<button class="home" data-go="home">${I.home}<span>דף הבית</span></button>`}${navBack()}${navFwd()}<span class="spacer"></span><button class="gear" data-set aria-label="הגדרות תצוגה">Aa</button><div class="rt2">תהילים ${kName(k)}${P ? `<div style="font-size:13px;font-weight:600;opacity:.85">${P.title}</div>` : ""}</div></header>`;
   if (!TX) return head + (txFail ? `<div class="card" style="text-align:center;margin-top:24px"><div style="font-size:18px;font-weight:700">לא הצלחנו לטעון את הטקסט</div><div style="color:var(--mute);margin:6px 0 12px">בדוק את החיבור לאינטרנט ונסה שוב.</div><button class="btn read" style="margin:auto" data-retry>נסה שוב</button></div>` : `<div class="cmn" style="margin-top:40px;font-size:18px">טוען את הפרק…</div>`) + footer(true);
   const sg = segOf(c);
   const mo = !!route.mo, malBox = `<div class="mal-box"><div class="mal-sum">${esc(T.sum[c] || "")}</div><button class="mal-tgl ${mo ? "on" : ""}" data-malfull aria-expanded="${mo}">📜 פירוש המלבי״ם המלא <span class="chev">${mo ? "▴" : "▾"}</span></button>${mo ? `<div class="mal-full">${malFullHTML(c, t)}</div>` : ""}</div>`;
@@ -1053,7 +1053,7 @@ const fromCode = c => JSON.parse(new TextDecoder().decode(Uint8Array.from(atob(c
 function applyBackup(o) {
   if (!o || o.app !== "tehillim" || !o.done || typeof o.done !== "object") throw 0;
   for (const k of Object.keys(o.done)) if (UNITS[k] && Number.isFinite(o.done[k])) S.done[k] = Math.max(S.done[k] || 0, o.done[k]);
-  if (o.bm && validK(o.bm.k) && Number.isInteger(o.bm.v)) S.bm = { k: o.bm.k, v: o.bm.v, p: portion(o.bm.p) ? o.bm.p : null };
+  if (o.bm && validK(o.bm.k) && Number.isInteger(o.bm.v) && o.bm.v >= tgt(o.bm.k).a && o.bm.v <= tgt(o.bm.k).z) S.bm = { k: o.bm.k, v: o.bm.v, p: portion(o.bm.p) ? o.bm.p : null };
   if (Number.isFinite(o.round)) S.round = Math.min(S.round, o.round);
   if (Number.isInteger(o.rounds)) S.rounds = Math.max(S.rounds, o.rounds);
   if (Array.isArray(o.fin)) S.fin = [...new Set(S.fin.concat(o.fin.filter(Number.isFinite)))].sort((a, b) => a - b);

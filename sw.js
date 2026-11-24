@@ -1,6 +1,6 @@
-const CACHE = "tehillim-v20";
+const CACHE = "tehillim-v21";
 const EXT = "tehillim-ext";            // פירוש שטיינזלץ מספריא - נשמר גם בין גרסאות
-const CORE = ["./", "index.html", "meta.js?v=12", "text.json", "font-tx4.woff2", "font-ui.woff2", "font-nk4-s.woff2", "font-nk4-d.woff2", "font-nk4-sd.woff2", "font-nk4-q.woff2", "font-nk4-dq.woff2", "logo.png", "manifest.webmanifest", "icon-v2-192.png", "icon-v2-512.png", "icon-v2-180.png"];
+const CORE = ["./", "index.html", "meta.js?v=12", "text.json", "font-tx5.woff2", "font-ui.woff2", "font-nk5-s.woff2", "font-nk5-d.woff2", "font-nk5-sd.woff2", "font-nk5-q.woff2", "font-nk5-dq.woff2", "logo.png", "manifest.webmanifest", "icon-v2-192.png", "icon-v2-512.png", "icon-v2-180.png"];
 const MAL = Array.from({ length: 150 }, (_, i) => "mal/" + (i + 1) + ".json");
 self.addEventListener("install", e => {
   e.waitUntil(caches.open(CACHE).then(async c => { await c.addAll(CORE); await Promise.allSettled(MAL.map(u => c.add(u))); }).then(() => self.skipWaiting()));

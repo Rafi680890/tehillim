@@ -700,7 +700,24 @@ function loadSt(c) {
     .catch(() => { stFail[c] = 1; }).finally(() => { delete stLoad[c]; if (route.v === "read" && tgt(route.k).c === c) { route.keep = true; render(); } });
 }
 window.addEventListener("online", () => { txFail = false; for (const k in stFail) delete stFail[k]; for (const k in malFail) delete malFail[k]; if (route.v === "read") { route.keep = true; render(); } });
-const clean = s => String(s || "").replace(/<(?!\/?b>)[^>]*>/g, "").replace(/&nbsp;/g, " ").replace(/&thinsp;/g, "");
+/* ניקוי תוכן חיצוני (ספריא): פירוק ב-DOMParser (מסמך אינרטי, בלי הרצת קוד), ושמירה רק של טקסט ושל <b>. כל שאר התגיות והמאפיינים נמחקים, והטקסט עובר escape. */
+const escH = s => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+function clean(s) {
+  const body = new DOMParser().parseFromString("<body>" + String(s || "") + "</body>", "text/html").body;
+  const walk = n => {
+    let o = "";
+    for (const c of n.childNodes) {
+      if (c.nodeType === 3) o += escH(c.nodeValue.replace(/ /g, " ").replace(/ /g, ""));
+      else if (c.nodeType === 1) {
+        const t = c.tagName.toLowerCase();
+        if (t === "script" || t === "style" || t === "template") continue;
+        o += t === "b" ? "<b>" + walk(c) + "</b>" : walk(c);
+      }
+    }
+    return o;
+  };
+  return walk(body);
+}
 function malFullHTML(c, t) {                    // פירוש המלבי"ם המלא לפרק (או לחצי פרק קי"ט), בקטע נגלל
   if (!MAL[c]) return `<div class="cmn">${malFail[c] ? "לא הצלחנו לטעון את פירוש המלבי״ם. נדרש חיבור לאינטרנט." : "טוען את פירוש המלבי״ם…"}</div>`;
   let h = "";
@@ -749,7 +766,7 @@ const installHelpHTML = () => `<button class="x" data-close aria-label="סגור
 <ol class="help-steps"><li>בהודעה לחצו על <b>״פרטים נוספים״</b> ואז על <b>״התקן בכל זאת״</b>.</li>
 <li>אם אין כפתור כזה: ב-Chrome פתחו את התפריט ⋮ ובחרו <b>״הוסף למסך הבית״</b>, ואז <b>״צור קיצור דרך״</b>.</li>
 <li>או פשוט המשיכו להשתמש באתר דרך הדפדפן, בלי להתקין.</li></ol>`;
-const APP_VERSION = "2026.11.24 (v23)";
+const APP_VERSION = "2026.11.24 (v24)";
 async function hardRefresh() {
   if (!navigator.onLine) { toast("צריך חיבור לאינטרנט כדי לרענן"); return; }
   toast("מרענן לגרסה החדשה…");

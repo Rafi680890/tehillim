@@ -1,0 +1,36 @@
+const {JSDOM}=require('C:/Users/User/Desktop/tanach-yomi/build/node_modules/jsdom');const fs=require('fs');const path=require('path');
+const root=path.resolve(__dirname,'..');
+const inl=n=>'<script>'+fs.readFileSync(root+'/'+n,'utf8')+'</script>';
+let html=fs.readFileSync(root+'/index.html','utf8');
+for(const n of ['meta.js','nk.js','app.js']) html=html.replace(new RegExp('<script src="'+n.replace('.','\.')+'[^"]*"></script>'),()=>inl(n));
+const store=new Map(), puts=[], fetched=[], calls=[], errs=[]; let remoteVer=null, failUrl=null;
+const cur=/APP_VERSION = "([^"]+)"/.exec(fs.readFileSync(root+'/app.js','utf8'))[1];
+const dom=new JSDOM(html,{url:'http://localhost/index.html',runScripts:'dangerously',pretendToBeVisual:true,beforeParse(w){
+  w.fetch=async u=>{u=String(u);fetched.push(u);
+    if(u==='app.js') return {ok:true,text:async()=>'const APP_VERSION = "'+(remoteVer||cur)+'";'};
+    if(failUrl&&u.includes(failUrl)) return {ok:false};
+    if(u.startsWith('text')||u.startsWith('mal/')) return {ok:true,clone(){return this},json:async()=>[]};
+    return {ok:true,text:async()=>''}};
+  w.scrollTo=()=>{};w.addEventListener('error',e=>errs.push(e.message));
+  Object.defineProperty(w.navigator,'serviceWorker',{value:{getRegistrations:async()=>{calls.push('unregister');return []},register:async()=>({})}});
+  w.caches={keys:async()=>['tehillim-v25','tehillim-v26','tehillim-ext'],delete:async k=>{calls.push('cache.delete '+k);return true},
+    match:async u=>store.has(u)?{}:undefined,open:async n=>({put:async(u,r)=>{puts.push(n);store.set(u,1)}})};
+  Object.defineProperty(w.navigator,'onLine',{value:true,configurable:true});}});
+const w=dom.window,d=w.document,wait=ms=>new Promise(r=>setTimeout(r,ms));
+(async()=>{await wait(5600);
+ const banner=()=>!!d.querySelector('#newver');
+ console.log('1 banner same version:',banner(),'(false)');
+ remoteVer='2099 (v99)'; await w.checkNewVersion(true); await wait(80); console.log('2 banner newer:',banner(),'(true)');
+ d.querySelector('[data-newver-later]').click(); await wait(30); console.log('3 dismissed:',!banner(),'(true)');
+ await w.checkNewVersion(true); await wait(80); console.log('4 same after dismiss -> none:',!banner(),'(true)');
+ console.log('5 offline btn:',!!d.querySelector('[data-offline]'));
+ store.set('text.json',1); for(let c=1;c<=150;c++) if(c!==7&&c!==99) store.set('mal/'+c+'.json',1);
+ fetched.length=0; failUrl='mal/99.json'; d.querySelector('[data-offline]').click(); await wait(400);
+ console.log('6 offline run1 fetched:',fetched.map(x=>x.split('?')[0]),'| status:',d.querySelector('#offst').textContent.slice(0,45),'| flag:',w.localStorage.getItem('tehillim.offline'));
+ failUrl=null; fetched.length=0; d.querySelector('[data-offline]').click(); await wait(300);
+ console.log('7 offline run2 fetched:',fetched,'| cache:',[...new Set(puts)],'| flag set:',!!w.localStorage.getItem('tehillim.offline'));
+ w.backup('restore'); await wait(100); console.log('8 restore sheet:',!!d.querySelector('#bkcode'));
+ d.querySelector('#bkcode').value='A'.repeat(200001); d.querySelector('[data-bkdo]').click(); await wait(100);
+ console.log('9 oversize rejected:',/לא תקין/.test(d.querySelector('#toast').textContent));
+ calls.length=0; w.fetch=async()=>{throw new Error('offline')}; await w.hardRefresh(); console.log('10 refresh offline -> no unregister/delete:',calls.length===0);
+ console.log('errors:',errs.filter(e=>!/Not implemented/.test(e)));process.exit(0)})();
